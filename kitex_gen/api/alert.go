@@ -6,34 +6,44 @@ import (
 	"context"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
+	"strings"
 )
 
 type ComputeRequest struct {
-	IndicatorID int64 `thrift:"indicatorID,1" json:"indicatorID"`
-	RoomID      int64 `thrift:"roomID,2" json:"roomID"`
+	IndicatorCode string `thrift:"indicator_code,1" json:"indicator_code"`
+	RoomID        int64  `thrift:"roomID,2" json:"roomID"`
+	TimeRange     int64  `thrift:"time_range,3" json:"time_range"`
 }
 
 func NewComputeRequest() *ComputeRequest {
 	return &ComputeRequest{}
 }
 
-func (p *ComputeRequest) GetIndicatorID() (v int64) {
-	return p.IndicatorID
+func (p *ComputeRequest) GetIndicatorCode() (v string) {
+	return p.IndicatorCode
 }
 
 func (p *ComputeRequest) GetRoomID() (v int64) {
 	return p.RoomID
 }
-func (p *ComputeRequest) SetIndicatorID(val int64) {
-	p.IndicatorID = val
+
+func (p *ComputeRequest) GetTimeRange() (v int64) {
+	return p.TimeRange
+}
+func (p *ComputeRequest) SetIndicatorCode(val string) {
+	p.IndicatorCode = val
 }
 func (p *ComputeRequest) SetRoomID(val int64) {
 	p.RoomID = val
 }
+func (p *ComputeRequest) SetTimeRange(val int64) {
+	p.TimeRange = val
+}
 
 var fieldIDToName_ComputeRequest = map[int16]string{
-	1: "indicatorID",
+	1: "indicator_code",
 	2: "roomID",
+	3: "time_range",
 }
 
 func (p *ComputeRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -56,7 +66,7 @@ func (p *ComputeRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -68,6 +78,16 @@ func (p *ComputeRequest) Read(iprot thrift.TProtocol) (err error) {
 		case 2:
 			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -106,10 +126,10 @@ ReadStructEndError:
 }
 
 func (p *ComputeRequest) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI64(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.IndicatorID = v
+		p.IndicatorCode = v
 	}
 	return nil
 }
@@ -119,6 +139,15 @@ func (p *ComputeRequest) ReadField2(iprot thrift.TProtocol) error {
 		return err
 	} else {
 		p.RoomID = v
+	}
+	return nil
+}
+
+func (p *ComputeRequest) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.TimeRange = v
 	}
 	return nil
 }
@@ -135,6 +164,10 @@ func (p *ComputeRequest) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
 			goto WriteFieldError
 		}
 
@@ -157,10 +190,10 @@ WriteStructEndError:
 }
 
 func (p *ComputeRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("indicatorID", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("indicator_code", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.IndicatorID); err != nil {
+	if err := oprot.WriteString(p.IndicatorCode); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -190,6 +223,23 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
+func (p *ComputeRequest) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("time_range", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.TimeRange); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
 func (p *ComputeRequest) String() string {
 	if p == nil {
 		return "<nil>"
@@ -203,18 +253,21 @@ func (p *ComputeRequest) DeepEqual(ano *ComputeRequest) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.IndicatorID) {
+	if !p.Field1DeepEqual(ano.IndicatorCode) {
 		return false
 	}
 	if !p.Field2DeepEqual(ano.RoomID) {
 		return false
 	}
+	if !p.Field3DeepEqual(ano.TimeRange) {
+		return false
+	}
 	return true
 }
 
-func (p *ComputeRequest) Field1DeepEqual(src int64) bool {
+func (p *ComputeRequest) Field1DeepEqual(src string) bool {
 
-	if p.IndicatorID != src {
+	if strings.Compare(p.IndicatorCode, src) != 0 {
 		return false
 	}
 	return true
@@ -222,6 +275,13 @@ func (p *ComputeRequest) Field1DeepEqual(src int64) bool {
 func (p *ComputeRequest) Field2DeepEqual(src int64) bool {
 
 	if p.RoomID != src {
+		return false
+	}
+	return true
+}
+func (p *ComputeRequest) Field3DeepEqual(src int64) bool {
+
+	if p.TimeRange != src {
 		return false
 	}
 	return true
@@ -388,22 +448,22 @@ func (p *ComputeResponse) Field1DeepEqual(src int64) bool {
 }
 
 type CheckRequest struct {
-	RuleID int64 `thrift:"ruleID,1" json:"ruleID"`
+	RuleCode string `thrift:"rule_code,1" json:"rule_code"`
 }
 
 func NewCheckRequest() *CheckRequest {
 	return &CheckRequest{}
 }
 
-func (p *CheckRequest) GetRuleID() (v int64) {
-	return p.RuleID
+func (p *CheckRequest) GetRuleCode() (v string) {
+	return p.RuleCode
 }
-func (p *CheckRequest) SetRuleID(val int64) {
-	p.RuleID = val
+func (p *CheckRequest) SetRuleCode(val string) {
+	p.RuleCode = val
 }
 
 var fieldIDToName_CheckRequest = map[int16]string{
-	1: "ruleID",
+	1: "rule_code",
 }
 
 func (p *CheckRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -426,7 +486,7 @@ func (p *CheckRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -466,10 +526,10 @@ ReadStructEndError:
 }
 
 func (p *CheckRequest) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI64(); err != nil {
+	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.RuleID = v
+		p.RuleCode = v
 	}
 	return nil
 }
@@ -504,10 +564,10 @@ WriteStructEndError:
 }
 
 func (p *CheckRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("ruleID", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("rule_code", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.RuleID); err != nil {
+	if err := oprot.WriteString(p.RuleCode); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -533,15 +593,15 @@ func (p *CheckRequest) DeepEqual(ano *CheckRequest) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.RuleID) {
+	if !p.Field1DeepEqual(ano.RuleCode) {
 		return false
 	}
 	return true
 }
 
-func (p *CheckRequest) Field1DeepEqual(src int64) bool {
+func (p *CheckRequest) Field1DeepEqual(src string) bool {
 
-	if p.RuleID != src {
+	if strings.Compare(p.RuleCode, src) != 0 {
 		return false
 	}
 	return true

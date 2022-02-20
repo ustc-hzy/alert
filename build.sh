@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-RUN_NAME="compute"
+RUN_NAME="alert"
 
 mkdir -p output/bin
 cp script/* output/

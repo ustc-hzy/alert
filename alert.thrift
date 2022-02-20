@@ -1,8 +1,9 @@
 namespace go api
 
 struct computeRequest {
-  1: i64 indicatorID
+  1: string indicator_code
   2: i64 roomID
+  3: i64 time_range
 }
 
 struct computeResponse {
@@ -10,7 +11,7 @@ struct computeResponse {
 }
 
 struct checkRequest {
-  1: i64 ruleID
+  1: string rule_code
 }
 
 struct checkResponse {
