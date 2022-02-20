@@ -1,7 +1,7 @@
 package main
 
 import (
-	"alert/core/handlers"
+	"alert/handlers"
 	api "alert/kitex_gen/api/schedule"
 	"log"
 )
