@@ -4,6 +4,7 @@ import (
 	"alert/core/dao"
 	"alert/core/dao/indicator_dao"
 	"gorm.io/gorm"
+	"time"
 )
 
 var DB *gorm.DB = dao.InitDB()
@@ -35,11 +36,10 @@ func (i IndicatorServiceImpl) Modify(indicator indicator_dao.Indicator) bool {
 	return true
 }
 
-
-
 func (i IndComputeImpl) Compute(IndicatorCode string, RoomID uint, StartTime time.Time, EndTime time.Time) uint {
-	ind := IndicatorServiceImpl{}.Query(IndicatorCode)
-	if ind.Indicators == nil && len(ind.Value) != 0 {
-
-	}
+	//ind := IndicatorServiceImpl{}.Query(IndicatorCode)
+	//if ind.Indicators == nil && len(ind.Value) != 0 {
+	//
+	//}
+	return 0
 }
