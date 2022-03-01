@@ -1,6 +1,9 @@
 package indicator_dao
 
-import "time"
+import (
+	"alert/core/dto"
+	"time"
+)
 
 type Op_type int32
 
@@ -22,7 +25,7 @@ type Indicator struct {
 }
 
 type IndicatorJson struct {
-	Indicators []Indicator
+	Indicators []dto.IndicatorVO
 	Op         Op_type
 	Value      string
 }

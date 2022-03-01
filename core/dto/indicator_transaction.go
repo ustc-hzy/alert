@@ -2,6 +2,7 @@ package dto
 
 import "time"
 
+// import cycle
 type Op_type int32
 
 const (
