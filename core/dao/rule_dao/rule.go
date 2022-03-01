@@ -19,7 +19,7 @@ const (
 )
 
 type Rule struct {
-	RuleCode    string
+	RuleCode    string `gorm:"primary_key"`
 	RuleName    string
 	RoomId      uint
 	Expression  string

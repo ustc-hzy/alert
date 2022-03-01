@@ -6,6 +6,7 @@ import (
 )
 
 type RuleServiceImpl struct{}
+type RuleCheckImpl struct{}
 
 func (i RuleServiceImpl) Serialization(Rules []rule_dao.Rule, Logic rule_dao.LogicType, Op rule_dao.OpType, Value uint) string {
 
@@ -26,4 +27,8 @@ func (i RuleServiceImpl) Query(RuleCode string) rule_dao.Rule {
 func (i RuleServiceImpl) Modify(RuleCode string, RuleName string, RoomId uint, Expression string, Description string,
 	StartTime time.Time, EndTime time.Time, CreateTime time.Time, UpdateTime time.Time) bool {
 
+}
+
+func (i RuleCheckImpl) Check(RuleCode string) bool {
+	RuleServiceImpl{}.Query(RuleCode)
 }
