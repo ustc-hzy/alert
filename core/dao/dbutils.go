@@ -18,6 +18,14 @@ const (
 	dbName   = "data_alert"
 )
 
+//const (
+//	userName = "alert_group_hzy"
+//	password = "zkdAlert#"
+//	ip       = "111.62.122.250"
+//	port     = "3306"
+//	dbName   = "data_alert"
+//)
+
 func InitDB() *gorm.DB {
 	path := strings.Join([]string{userName, ":", password, "@tcp(", ip, ":", port, ")/", dbName, "?charset=utf8mb4&parseTime=True&loc=Local"}, "")
 	DB, err := gorm.Open(mysql.Open(path), &gorm.Config{})
