@@ -4,31 +4,30 @@ import (
 	"alert/core/dao/rule_dao"
 	"alert/core/dto"
 	"errors"
-	"time"
 )
 
 type RuleServiceImpl struct{}
 type RuleCheckImpl struct{}
 
-func (i RuleServiceImpl) Serialization(Rules []rule_dao.Rule, Logic rule_dao.LogicType, Op rule_dao.OpType, Value uint) string {
+func (i RuleServiceImpl) Serialization(json rule_dao.RuleJson) string {
 
+	return ""
 }
 func (i RuleServiceImpl) AntiSerialization(Expression string) rule_dao.RuleJson {
-
+	return rule_dao.RuleJson{}
 }
-func (i RuleServiceImpl) Add(RuleCode string, RuleName string, RoomId uint, Expression string, Description string,
-	StartTime time.Time, EndTime time.Time, CreateTime time.Time, UpdateTime time.Time) bool {
+func (i RuleServiceImpl) Add(rule rule_dao.Rule) bool {
 
+	return false
 }
 func (i RuleServiceImpl) Delete(RuleCode string) bool {
-
+	return false
 }
 func (i RuleServiceImpl) Query(RuleCode string) dto.RuleVo {
 
 }
-func (i RuleServiceImpl) Modify(RuleCode string, RuleName string, RoomId uint, Expression string, Description string,
-	StartTime time.Time, EndTime time.Time, CreateTime time.Time, UpdateTime time.Time) bool {
-
+func (i RuleServiceImpl) Modify(rule rule_dao.Rule) bool {
+	return false
 }
 
 func (i RuleCheckImpl) Check(RuleCode string) (bool, error) {
