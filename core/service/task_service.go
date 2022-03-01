@@ -11,12 +11,18 @@ type TaskScheduleImpl struct{}
 
 func (i TaskServiceImpl) Add(TaskCode string, TaskName string, RuleCode string, Frequency time.Duration, NextTime time.Time, Status bool) bool {
 	task := task_dao.Task{TaskCode: TaskCode, TaskName: TaskName, RuleCode: RuleCode, Frequency: Frequency, NextTime: NextTime, Status: Status}
-	DB.Create(task)
+	res := DB.Debug().Create(task)
+	if res.Error != nil {
+		return false
+	}
 	return true
 }
 
 func (i TaskServiceImpl) Delete(TaskCode string) bool {
-	DB.Delete(&task_dao.Task{}, TaskCode)
+	res := DB.Debug().Delete(&task_dao.Task{}, TaskCode)
+	if res.Error != nil {
+		return false
+	}
 	return true
 }
 
@@ -28,7 +34,10 @@ func (i TaskServiceImpl) Query(TaskCode string) task_dao.Task {
 
 func (i TaskServiceImpl) Modify(TaskCode string, TaskName string, RuleCode string, Frequency time.Duration, NextTime time.Time, Status bool) bool {
 	task := task_dao.Task{TaskCode: TaskCode, TaskName: TaskName, RuleCode: RuleCode, Frequency: Frequency, NextTime: NextTime, Status: Status}
-	DB.Save(task)
+	res := DB.Debug().Save(task)
+	if res.Error != nil {
+		return false
+	}
 	return true
 }
 
@@ -42,7 +51,7 @@ func (i TaskScheduleImpl) Schedule(Frequency time.Duration, TaskList []dto.TaskV
 		for j := 0; j < len(TaskList); j++ {
 			WorkServiceImpl{}.Work(TaskList[j].RuleCode)
 			TaskServiceImpl{}.UpdateTime(TaskList[j])
-			time.Sleep(1)
+			time.Sleep(Frequency)
 		}
 	}
 }

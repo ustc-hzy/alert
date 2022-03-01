@@ -4,11 +4,10 @@ import (
 	"alert/core/dao"
 	"alert/core/dao/indicator_dao"
 	"alert/core/dto"
-	"gorm.io/gorm"
 	"time"
 )
 
-var DB *gorm.DB = dao.InitDB()
+var DB = dao.InitDB()
 
 type IndicatorServiceImpl struct{}
 type IndComputeImpl struct{}
@@ -44,7 +43,21 @@ func (i IndComputeImpl) Compute(IndicatorCode string, RoomID uint, StartTime tim
 
 func (i IndComputeImpl) ComputeLeaf(ind dto.IndicatorVO) uint {
 	if ind.Indicators == nil && len(ind.Value) != 0 && ind.Op == -1 {
-
+		var ret uint
+		DB.Raw(ind.Value).Scan(&ret)
+	} else if ind.Indicators != nil && len(ind.Value) == 0 && ind.Op != -1 {
+		i1 := i.ComputeLeaf(ind.Indicators[0])
+		i2 := i.ComputeLeaf(ind.Indicators[1])
+		switch ind.Op {
+		case 0:
+			return i1 + i2
+		case 1:
+			return i1 - i2
+		case 2:
+			return i1 * i2
+		case 3:
+			return i1 / i2
+		}
 	}
 	return 0
 }

@@ -46,28 +46,24 @@ func (i RuleCheckImpl) CheckLeaf(rule dto.RuleVo) (bool, error) {
 			} else {
 				return false, nil
 			}
-			break
 		case 1:
 			if ind < rule.Value {
 				return true, nil
 			} else {
 				return false, nil
 			}
-			break
 		case 2:
 			if ind == rule.Value {
 				return true, nil
 			} else {
 				return false, nil
 			}
-			break
 		case 3:
 			if ind != rule.Value {
 				return true, nil
 			} else {
 				return false, nil
 			}
-			break
 		}
 	} else if rule.Rules != nil && rule.Logic != -1 && rule.Op == -1 && rule.Value == 0 && len(rule.IndicatorCode) == 0 {
 		//if not leaf
@@ -80,14 +76,12 @@ func (i RuleCheckImpl) CheckLeaf(rule dto.RuleVo) (bool, error) {
 			} else {
 				return r1 && r2, e1
 			}
-			break
 		case 1:
 			if e1 == nil {
 				return r1 || r2, e2
 			} else {
 				return r1 || r2, e1
 			}
-			break
 		}
 	}
 	return false, errors.New("data error")
