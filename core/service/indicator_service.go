@@ -4,6 +4,7 @@ import (
 	"alert/core/dao"
 	"alert/core/dao/indicator_dao"
 	"alert/core/dto"
+	"log"
 	"time"
 )
 
@@ -44,7 +45,11 @@ func (i IndComputeImpl) Compute(IndicatorCode string, RoomID uint, StartTime tim
 func (i IndComputeImpl) ComputeLeaf(ind dto.IndicatorVO, id uint, start time.Time, end time.Time) uint {
 	if ind.Indicators == nil && len(ind.Value) != 0 && ind.Op == -1 {
 		var ret uint
-		DB.Raw(ind.Value).Scan(&ret)
+		res := DB.Debug().Raw(ind.Value).Scan(&ret)
+		if res.Error != nil {
+			log.Fatal(res.Error)
+		}
+		return ret
 	} else if ind.Indicators != nil && len(ind.Value) == 0 && ind.Op != -1 {
 		i1 := i.ComputeLeaf(ind.Indicators[0], id, start, end)
 		i2 := i.ComputeLeaf(ind.Indicators[1], id, start, end)

@@ -25,13 +25,14 @@ func (i TaskServiceImpl) Delete(TaskCode string) bool {
 	return true
 }
 
-func (i TaskServiceImpl) Query(TaskCode string) task_dao.Task {
+func (i TaskServiceImpl) Query(TaskCode string) dto.TaskVO {
 	var task task_dao.Task
-	DB.Where("TaskCode = ?", TaskCode).First(task)
-	return task
+	DB.Debug().Where("task_code = ?", TaskCode).First(task)
+	TaskVo := i.Transfer(task)
+	return TaskVo
 }
 
-func (i TaskServiceImpl) Modify(TaskCode string, TaskName string, RuleCode string, Frequency time.Duration, NextTime time.Time, Status bool) bool {
+func (i TaskServiceImpl) Modify(TaskCode, TaskName, RuleCode string, Frequency time.Duration, NextTime time.Time, Status bool) bool {
 	task := task_dao.Task{TaskCode: TaskCode, TaskName: TaskName, RuleCode: RuleCode, Frequency: Frequency, NextTime: NextTime, Status: Status}
 	res := DB.Debug().Save(task)
 	if res.Error != nil {
@@ -43,6 +44,11 @@ func (i TaskServiceImpl) Modify(TaskCode string, TaskName string, RuleCode strin
 func (i TaskServiceImpl) UpdateTime(vo dto.TaskVO) bool {
 	vo.NextTime = vo.NextTime.Add(vo.Frequency)
 	return true
+}
+
+func (i TaskServiceImpl) Transfer(task task_dao.Task) dto.TaskVO {
+	TaskVo := dto.TaskVO{TaskCode: task.TaskCode, RuleCode: task.RuleCode, NextTime: task.NextTime, Frequency: task.Frequency, Status: task.Status}
+	return TaskVo
 }
 
 func (i TaskScheduleImpl) Schedule(Frequency time.Duration, TaskList []dto.TaskVO) {
