@@ -7,7 +7,7 @@ import (
 type IndicatorInterface interface {
 	Serialization(indicatorJson indicator_dao.IndicatorJson) string
 	AntiSerialization(expression string) indicator_dao.IndicatorJson
-	IndicatorAdd(indicator indicator_dao.Indicator) bool
+	Add(indicator indicator_dao.Indicator, indicatorJson indicator_dao.IndicatorJson) bool
 	Delete(IndicatorCode string) bool
 	Query(IndicatorCode string) indicator_dao.Indicator
 	Modify(indicator indicator_dao.Indicator) bool
