@@ -9,8 +9,7 @@ import (
 type TaskServiceImpl struct{}
 type TaskScheduleImpl struct{}
 
-func (i TaskServiceImpl) Add(TaskCode string, TaskName string, RuleCode string, Frequency time.Duration, NextTime time.Time, Status bool) bool {
-	task := task_dao.Task{TaskCode: TaskCode, TaskName: TaskName, RuleCode: RuleCode, Frequency: Frequency, NextTime: NextTime, Status: Status}
+func (i TaskServiceImpl) Add(task task_dao.Task) bool {
 	res := DB.Debug().Create(task)
 	if res.Error != nil {
 		return false

@@ -1,14 +1,15 @@
-package service
+package test
 
 import (
 	"alert/core/dao/indicator_dao"
+	"alert/core/service"
 	"testing"
 	"time"
 )
 
 func TestAdd(t *testing.T) {
 
-	indicator_service := IndicatorServiceImpl{}
+	indicator_service := service.IndicatorServiceImpl{}
 	indicator := indicator_dao.Indicator{IndicatorCode: "test", Name: "test", Expression: "test", Description: "test", CreateTime: time.Now(), UpdateTime: time.Now()}
 	result := indicator_service.IndicatorAdd(indicator)
 	if !result {
