@@ -3,14 +3,11 @@ package service
 import (
 	"alert/core/dao/task_dao"
 	"alert/core/dto"
-	"gorm.io/gorm"
 	"time"
 )
 
 type TaskServiceImpl struct{}
 type TaskScheduleImpl struct{}
-
-var DB *gorm.DB
 
 func (i TaskServiceImpl) Add(TaskCode string, TaskName string, RuleCode string, Frequency time.Duration, NextTime time.Time, Status bool) bool {
 	task := task_dao.Task{TaskCode: TaskCode, TaskName: TaskName, RuleCode: RuleCode, Frequency: Frequency, NextTime: NextTime, Status: Status}

@@ -24,7 +24,7 @@ func (i RuleServiceImpl) Delete(RuleCode string) bool {
 	return false
 }
 func (i RuleServiceImpl) Query(RuleCode string) dto.RuleVo {
-
+	return dto.RuleVo{}
 }
 func (i RuleServiceImpl) Modify(rule rule_dao.Rule) bool {
 	return false

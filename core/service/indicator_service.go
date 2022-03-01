@@ -3,8 +3,8 @@ package service
 import (
 	"alert/core/dao"
 	"alert/core/dao/indicator_dao"
-	"gorm.io/gorm"
 	"alert/core/dto"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -30,8 +30,8 @@ func (i IndicatorServiceImpl) IndicatorAdd(indicator indicator_dao.Indicator) bo
 func (i IndicatorServiceImpl) Delete(IndicatorCode string) bool {
 	return true
 }
-func (i IndicatorServiceImpl) Query(IndicatorCode string) indicator_dao.Indicator {
-	return indicator_dao.Indicator{}
+func (i IndicatorServiceImpl) Query(IndicatorCode string) dto.IndicatorVO {
+	return dto.IndicatorVO{}
 }
 func (i IndicatorServiceImpl) Modify(indicator indicator_dao.Indicator) bool {
 	return true
@@ -46,4 +46,5 @@ func (i IndComputeImpl) ComputeLeaf(ind dto.IndicatorVO) uint {
 	if ind.Indicators == nil && len(ind.Value) != 0 && ind.Op == -1 {
 
 	}
+	return 0
 }
