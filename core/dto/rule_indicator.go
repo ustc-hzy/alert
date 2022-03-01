@@ -19,16 +19,17 @@ const (
 )
 
 type RuleVo struct {
-	RuleCode    string `gorm:"primary_key"`
-	RuleName    string
-	RoomId      uint
-	Rules       []RuleVo
-	Logic       LogicType
-	Op          OpType
-	Value       uint
-	Description string
-	StartTime   time.Time
-	EndTime     time.Time
-	CreateTime  time.Time
-	UpdateTime  time.Time
+	RuleCode      string `gorm:"primary_key"`
+	RuleName      string
+	RoomId        uint
+	Rules         []RuleVo
+	Logic         LogicType
+	Op            OpType
+	Value         uint
+	IndicatorCode string
+	Description   string
+	StartTime     time.Time
+	EndTime       time.Time
+	CreateTime    time.Time
+	UpdateTime    time.Time
 }

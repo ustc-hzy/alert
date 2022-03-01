@@ -5,6 +5,7 @@ import "time"
 type Op_type int32
 
 const (
+	NIL      Op_type = -1
 	ADD      Op_type = 0
 	SUBTRACT Op_type = 1
 	MULTIPLY Op_type = 2

@@ -1,11 +1,18 @@
 package service
 
-import "time"
+import (
+	"log"
+	"time"
+)
 
 type WorkServiceImpl struct{}
 
 func (i WorkServiceImpl) Work(RuleCode string) bool {
-	return RuleCheckImpl{}.Check(RuleCode)
+	ret, err := RuleCheckImpl{}.Check(RuleCode)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return ret
 }
 
 func (i WorkServiceImpl) ComputeWork(IndicatorCode string, RoomID uint, StartTime time.Time, EndTime time.Time) uint {
