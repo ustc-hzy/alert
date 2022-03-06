@@ -31,7 +31,7 @@ func TestDelete(t *testing.T) {
 
 func TestQuery(t *testing.T) {
 
-	query := indicator_service.Query("test")
+	query := indicator_service.Query("test1")
 	fmt.Println(query)
 }
 

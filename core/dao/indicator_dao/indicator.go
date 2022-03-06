@@ -9,8 +9,8 @@ import (
 type Indicator struct {
 	IndicatorCode string    `gorm:"column:code"`
 	Name          string    `gorm:"column:indicatorName"`
-	Expression    string    `gorm:"column:Expression"`
-	Description   string    `gorm:"column:Description"`
+	Expression    string    `gorm:"column:expression"`
+	Description   string    `gorm:"column:description"`
 	CreateTime    time.Time `gorm:"column:create_time"`
 	UpdateTime    time.Time `gorm:"column:update_time"`
 }
