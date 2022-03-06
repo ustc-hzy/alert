@@ -2,7 +2,7 @@ package service
 
 import (
 	"alert/core/dao/task_dao"
-	"alert/core/dto"
+	"alert/core/vo"
 	"time"
 )
 
@@ -41,12 +41,12 @@ func (i TaskServiceImpl) Modify(TaskCode string, TaskName string, RuleCode strin
 	return true
 }
 
-func (i TaskServiceImpl) UpdateTime(vo dto.TaskVO) bool {
+func (i TaskServiceImpl) UpdateTime(vo vo.TaskVO) bool {
 	vo.NextTime = vo.NextTime.Add(vo.Frequency)
 	return true
 }
 
-func (i TaskScheduleImpl) Schedule(Frequency time.Duration, TaskList []dto.TaskVO) {
+func (i TaskScheduleImpl) Schedule(Frequency time.Duration, TaskList []vo.TaskVO) {
 	for {
 		for j := 0; j < len(TaskList); j++ {
 			WorkServiceImpl{}.Work(TaskList[j].RuleCode)
