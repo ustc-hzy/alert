@@ -6,11 +6,14 @@ import (
 	"alert/core/vo"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 )
 
 type RuleServiceImpl struct{}
 type RuleCheckImpl struct{}
+
+const RULETABLENAME = "rules"
 
 func (i RuleServiceImpl) Serialization(ruleJson rule_dao.RuleJson) string {
 	result, _ := json.Marshal(ruleJson)
@@ -26,12 +29,29 @@ func (i RuleServiceImpl) AntiSerialization(expression string) rule_dao.RuleJson 
 	return result
 }
 func (i RuleServiceImpl) Add(rule rule_dao.Rule, ruleJson rule_dao.RuleJson) bool {
+
 	rule.Expression = i.Serialization(ruleJson)
-	if DB.Debug().Table("rules").Where("code = ?", rule.RuleCode) != nil {
-		log.Fatalln("the rule code already exist")
+	var count int64
+	res := DB.Debug().Table(RULETABLENAME).Where("rule_code = ?", rule.RuleCode).Where("is_delete = ?", 0).Count(&count)
+	if res.Error != nil {
+		log.Fatalln(res.Error)
 		return false
 	}
-	res := DB.Debug().Create(&rule)
+	if count != 0 {
+		log.Fatalln("the indicator code already exist")
+		return false
+	}
+
+	res1 := DB.Debug().Create(&rule)
+	if res1.Error != nil {
+		log.Fatalln(res1.Error)
+		return false
+	}
+
+	return true
+}
+func (i RuleServiceImpl) Delete(ruleCode string) bool {
+	res := DB.Debug().Table(RULETABLENAME).Where("rule_code = ? ", ruleCode).Update("is_delete", 1)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 		return false
@@ -39,14 +59,51 @@ func (i RuleServiceImpl) Add(rule rule_dao.Rule, ruleJson rule_dao.RuleJson) boo
 
 	return true
 }
-func (i RuleServiceImpl) Delete(ruleCode string) bool {
-	return false
-}
 func (i RuleServiceImpl) Query(ruleCode string) vo.RuleVo {
-	return vo.RuleVo{}
+
+	rule := rule_dao.Rule{}
+	res := DB.Debug().Table(RULETABLENAME).Where("rule_code = ?", ruleCode).Where("is_delete = ?", 0).Find(&rule)
+	if res.Error != nil {
+		log.Fatalln(res.Error)
+	}
+	if res.RowsAffected > 1 {
+		log.Fatalln("code is not only")
+	} else if res.RowsAffected == 0 {
+		log.Print("not found")
+		return vo.RuleVo{}
+	}
+	fmt.Println(res.RowsAffected)
+	//fmt.Println(rule.Expression)
+	if rule.Expression == "" {
+		log.Fatalln("empty expression")
+	}
+	//construct VO
+	rulejson := i.AntiSerialization(rule.Expression)
+	ruleVo := vo.RuleVo{
+		RuleCode:      rule.RuleCode,
+		RuleName:      rule.RuleName,
+		RoomId:        rule.RoomId,
+		Rules:         rulejson.Rules,
+		Logic:         rulejson.Logic,
+		Op:            rulejson.Op,
+		Value:         rulejson.Value,
+		IndicatorCode: rulejson.IndicatorCode,
+		Description:   rule.Description,
+		StartTime:     rule.StartTime,
+		EndTime:       rule.EndTime,
+		CreateTime:    rule.CreateTime,
+		UpdateTime:    rule.UpdateTime,
+	}
+
+	fmt.Println(ruleVo)
+	return ruleVo
 }
 func (i RuleServiceImpl) Modify(rule rule_dao.Rule) bool {
-	return false
+	res := DB.Debug().Omit("create_time").Where("rule_code", rule.RuleCode).Save(&rule)
+	if res.Error != nil {
+		log.Fatalln(res.Error)
+	}
+	return true
 }
 
 func (i RuleCheckImpl) Check(ruleCode string) (bool, error) {

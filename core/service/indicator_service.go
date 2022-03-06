@@ -16,6 +16,8 @@ var DB = dao.InitDB()
 type IndicatorServiceImpl struct{}
 type IndComputeImpl struct{}
 
+const INDICATORABLENAME = "indicators"
+
 func (i IndicatorServiceImpl) Serialization(indicatorJson indicator_dao.IndicatorJson) string {
 	result, _ := json.Marshal(indicatorJson)
 	return string(result)
@@ -34,7 +36,7 @@ func (i IndicatorServiceImpl) Add(indicator indicator_dao.Indicator, indicatorJs
 
 	indicator.Expression = i.Serialization(indicatorJson)
 	var count int64
-	res := DB.Debug().Table("indicators").Where("code = ?", indicator.IndicatorCode).Count(&count)
+	res := DB.Debug().Table(INDICATORABLENAME).Where("code = ?", indicator.IndicatorCode).Where("is_delete = ?", 0).Count(&count)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 		return false
@@ -44,7 +46,7 @@ func (i IndicatorServiceImpl) Add(indicator indicator_dao.Indicator, indicatorJs
 		return false
 	}
 
-	res1 := DB.Debug().Table("indicators").Create(&indicator)
+	res1 := DB.Debug().Table(INDICATORABLENAME).Create(&indicator)
 	if res1.Error != nil {
 		log.Fatalln(res1.Error)
 		return false
@@ -53,7 +55,7 @@ func (i IndicatorServiceImpl) Add(indicator indicator_dao.Indicator, indicatorJs
 	return true
 }
 func (i IndicatorServiceImpl) Delete(indicatorCode string) bool {
-	res := DB.Debug().Table("indicators").Where("code = ? ", indicatorCode).Update("is_delete", 1)
+	res := DB.Debug().Table(INDICATORABLENAME).Where("code = ? ", indicatorCode).Where("is_delete = ?", 0).Update("is_delete", 1)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 		return false
@@ -63,16 +65,22 @@ func (i IndicatorServiceImpl) Delete(indicatorCode string) bool {
 }
 func (i IndicatorServiceImpl) Query(indicatorCode string) vo.IndicatorVO {
 	indicators := indicator_dao.Indicator{}
-	res := DB.Debug().Table("indicators").Where("code = ?", indicatorCode).Where("is_delete = ?", 0).Find(&indicators)
+	res := DB.Debug().Table(INDICATORABLENAME).Where("code = ?", indicatorCode).Where("is_delete = ?", 0).Find(&indicators)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
 	if res.RowsAffected > 1 {
 		log.Fatalln("code is not only")
+	} else if res.RowsAffected == 0 {
+		log.Print("not found")
+		//TODO: return what?
+		return vo.IndicatorVO{}
 	}
 	fmt.Println(res.RowsAffected)
-	fmt.Println("111")
-	fmt.Println(indicators.Expression)
+	//fmt.Println(indicators.Expression)
+	if indicators.Expression == "" {
+		log.Fatalln("empty expression")
+	}
 	//construct VO
 	indicatorJson := i.AntiSerialization(indicators.Expression)
 	indicatorVo := vo.IndicatorVO{IndicatorCode: indicators.IndicatorCode,
@@ -88,7 +96,7 @@ func (i IndicatorServiceImpl) Query(indicatorCode string) vo.IndicatorVO {
 	return indicatorVo
 }
 func (i IndicatorServiceImpl) Modify(indicator indicator_dao.Indicator) bool {
-	res := DB.Debug().Omit("create_time").Where("code", indicator.IndicatorCode).Save(&indicator)
+	res := DB.Debug().Omit("create_time").Where("code", indicator.IndicatorCode).Where("is_delete = ?", 0).Save(&indicator)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}

@@ -2,6 +2,7 @@ package rule_dao
 
 import (
 	"alert/core"
+	"alert/core/vo"
 	"time"
 )
 
@@ -18,7 +19,7 @@ type Rule struct {
 }
 
 type RuleJson struct {
-	Rules         []Rule
+	Rules         []vo.RuleVo
 	Logic         core.LogicType
 	Op            core.OpType
 	Value         uint

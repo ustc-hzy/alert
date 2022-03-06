@@ -13,7 +13,7 @@ var ind_compute_service = IndComputeImpl{}
 
 func TestAdd(t *testing.T) {
 
-	indicator := indicator_dao.Indicator{IndicatorCode: "test5", Name: "test", Expression: "test", Description: "test", CreateTime: time.Now(), UpdateTime: time.Now()}
+	indicator := indicator_dao.Indicator{IndicatorCode: "test7", Name: "test", Expression: "test", Description: "test", CreateTime: time.Now(), UpdateTime: time.Now()}
 	indicatorJson := indicator_dao.IndicatorJson{Indicators: nil, Caculate: core.NIL, Value: "select deal_amount from `deal_infos`"}
 	result := indicator_service.Add(indicator, indicatorJson)
 	if !result {
@@ -41,6 +41,6 @@ func TestModify(t *testing.T) {
 }
 
 func TestCompute(t *testing.T) {
-	val := ind_compute_service.Compute("test", 0, time.Now(), time.Now())
+	val := ind_compute_service.Compute("test2", 0, time.Now(), time.Now())
 	fmt.Println(val)
 }
