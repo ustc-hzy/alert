@@ -1,20 +1,22 @@
 package service
 
 import (
+	"alert/core"
 	"alert/core/dao"
 	"alert/core/dao/indicator_dao"
-	"alert/core/dto"
+	"alert/core/vo"
 	"encoding/json"
 	"fmt"
-	"gorm.io/gorm"
 	"log"
 	"time"
 )
 
-var DB *gorm.DB = dao.InitDB()
+var DB = dao.InitDB()
 
 type IndicatorServiceImpl struct{}
 type IndComputeImpl struct{}
+
+const INDICATORABLENAME = "indicators"
 
 func (i IndicatorServiceImpl) Serialization(indicatorJson indicator_dao.IndicatorJson) string {
 	result, _ := json.Marshal(indicatorJson)
@@ -30,12 +32,30 @@ func (i IndicatorServiceImpl) AntiSerialization(expression string) indicator_dao
 	return result
 }
 
-//TODO: keep only one
 func (i IndicatorServiceImpl) Add(indicator indicator_dao.Indicator, indicatorJson indicator_dao.IndicatorJson) bool {
 
 	indicator.Expression = i.Serialization(indicatorJson)
+	var count int64
+	res := DB.Debug().Table(INDICATORABLENAME).Where("code = ?", indicator.IndicatorCode).Where("is_delete = ?", 0).Count(&count)
+	if res.Error != nil {
+		log.Fatalln(res.Error)
+		return false
+	}
+	if count != 0 {
+		log.Fatalln("the indicator code already exist")
+		return false
+	}
 
-	res := DB.Debug().Create(&indicator)
+	res1 := DB.Debug().Table(INDICATORABLENAME).Create(&indicator)
+	if res1.Error != nil {
+		log.Fatalln(res1.Error)
+		return false
+	}
+
+	return true
+}
+func (i IndicatorServiceImpl) Delete(indicatorCode string) bool {
+	res := DB.Debug().Table(INDICATORABLENAME).Where("code = ? ", indicatorCode).Where("is_delete = ?", 0).Update("is_delete", 1)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 		return false
@@ -43,32 +63,30 @@ func (i IndicatorServiceImpl) Add(indicator indicator_dao.Indicator, indicatorJs
 
 	return true
 }
-func (i IndicatorServiceImpl) Delete(IndicatorCode string) bool {
-	res := DB.Debug().Table("indicators").Where("code = ? ", IndicatorCode).Update("is_delete", 1)
-	if res.Error != nil {
-		log.Fatalln(res.Error)
-		return false
-	}
-
-	return true
-}
-func (i IndicatorServiceImpl) Query(IndicatorCode string) dto.IndicatorVO {
+func (i IndicatorServiceImpl) Query(indicatorCode string) vo.IndicatorVO {
 	indicators := indicator_dao.Indicator{}
-	res := DB.Debug().Table("indicators").Where("code = ?", IndicatorCode).Where("is_delete = ?", 0).Find(&indicators)
+	res := DB.Debug().Table(INDICATORABLENAME).Where("code = ?", indicatorCode).Where("is_delete = ?", 0).Find(&indicators)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
 	if res.RowsAffected > 1 {
 		log.Fatalln("code is not only")
+	} else if res.RowsAffected == 0 {
+		log.Print("not found")
+		//TODO: return what?
+		return vo.IndicatorVO{}
 	}
 	fmt.Println(res.RowsAffected)
-	fmt.Println(indicators.Expression)
+	//fmt.Println(indicators.Expression)
+	if indicators.Expression == "" {
+		log.Fatalln("empty expression")
+	}
 	//construct VO
 	indicatorJson := i.AntiSerialization(indicators.Expression)
-	indicatorVo := dto.IndicatorVO{IndicatorCode: indicators.IndicatorCode,
+	indicatorVo := vo.IndicatorVO{IndicatorCode: indicators.IndicatorCode,
 		Name:        indicators.Name,
 		Indicators:  indicatorJson.Indicators,
-		Op:          dto.Op_type(indicatorJson.Op),
+		Caculate:    indicatorJson.Caculate,
 		Value:       indicatorJson.Value,
 		Description: indicators.Description,
 		CreateTime:  indicators.CreateTime,
@@ -78,7 +96,7 @@ func (i IndicatorServiceImpl) Query(IndicatorCode string) dto.IndicatorVO {
 	return indicatorVo
 }
 func (i IndicatorServiceImpl) Modify(indicator indicator_dao.Indicator) bool {
-	res := DB.Debug().Omit("create_time").Where("code", indicator.IndicatorCode).Save(&indicator)
+	res := DB.Debug().Omit("create_time").Where("code", indicator.IndicatorCode).Where("is_delete = ?", 0).Save(&indicator)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
@@ -86,35 +104,35 @@ func (i IndicatorServiceImpl) Modify(indicator indicator_dao.Indicator) bool {
 }
 
 //TODO: param condition
-func (i IndComputeImpl) Compute(IndicatorCode string, RoomID uint, StartTime time.Time, EndTime time.Time) uint {
-	ind := IndicatorServiceImpl{}.Query(IndicatorCode)
+func (i IndComputeImpl) Compute(indicatorCode string, roomID uint, startTime time.Time, endTime time.Time) uint {
+	ind := IndicatorServiceImpl{}.Query(indicatorCode)
 	return i.ComputeLeaf(ind)
 }
 
-func (i IndComputeImpl) ComputeLeaf(ind dto.IndicatorVO) uint {
-	if ind.Indicators == nil && len(ind.Value) != 0 && ind.Op == -1 {
+func (i IndComputeImpl) ComputeLeaf(ind vo.IndicatorVO) uint {
+	if ind.Indicators == nil && len(ind.Value) != 0 && ind.Caculate == -1 {
 		//leaf
 		var amount uint
-		res := DB.Debug().Table("deal_infos").Exec(ind.Value).First(&amount)
+		res := DB.Debug().Raw(ind.Value).Scan(&amount)
 		if res.Error != nil {
 			log.Fatalln(res.Error)
 		}
 		return amount
 	} else {
-		switch ind.Op {
-		case dto.Op_type(indicator_dao.ADD):
+		switch ind.Caculate {
+		case core.ADD:
 			value := i.ComputeLeaf(ind.Indicators[0]) + i.ComputeLeaf(ind.Indicators[1])
 			return value
 			break
-		case dto.Op_type(indicator_dao.SUBTRACT):
+		case core.SUBTRACT:
 			value := i.ComputeLeaf(ind.Indicators[0]) - i.ComputeLeaf(ind.Indicators[1])
 			return value
 			break
-		case dto.Op_type(indicator_dao.MULTIPLY):
+		case core.MULTIPLY:
 			value := i.ComputeLeaf(ind.Indicators[0]) * i.ComputeLeaf(ind.Indicators[1])
 			return value
 			break
-		case dto.Op_type(indicator_dao.DIVIDE):
+		case core.DIVIDE:
 			value := i.ComputeLeaf(ind.Indicators[0]) / i.ComputeLeaf(ind.Indicators[1])
 			return value
 			break

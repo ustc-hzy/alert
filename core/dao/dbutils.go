@@ -1,9 +1,6 @@
 package dao
 
 import (
-	"alert/core/dao/indicator_dao"
-	"alert/core/dao/rule_dao"
-	"alert/core/dao/task_dao"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -24,6 +21,6 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		log.Fatalf("failed to connect database:%v", err)
 	}
-	DB.AutoMigrate(&indicator_dao.Indicator{}, &rule_dao.Rule{}, &task_dao.Task{})
+	//DB.AutoMigrate(&indicator_dao.Indicator{}, &rule_dao.Rule{}, &task_dao.Task{})
 	return DB
 }

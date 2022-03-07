@@ -1,21 +1,8 @@
-package dto
+package vo
 
-import "time"
-
-type OpType int32
-
-const (
-	LARGER   OpType = 0
-	SMALLER  OpType = 1
-	EQUAL    OpType = 2
-	NOTEQUAL OpType = 3
-)
-
-type LogicType int32
-
-const (
-	AND LogicType = 0
-	OR  LogicType = 1
+import (
+	"alert/core"
+	"time"
 )
 
 type RuleVo struct {
@@ -23,8 +10,8 @@ type RuleVo struct {
 	RuleName      string
 	RoomId        uint
 	Rules         []RuleVo
-	Logic         LogicType
-	Op            OpType
+	Logic         core.LogicType
+	Op            core.OpType
 	Value         uint
 	IndicatorCode string
 	Description   string

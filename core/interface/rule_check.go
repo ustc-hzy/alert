@@ -1,8 +1,8 @@
 package _interface
 
-import "alert/core/dto"
+import "alert/core/vo"
 
 type RuleCheckInterface interface {
 	Check(RuleCode string) (bool, error)
-	CheckLeaf(rule dto.RuleVo) (bool, error)
+	CheckLeaf(rule vo.RuleVo) (bool, error)
 }

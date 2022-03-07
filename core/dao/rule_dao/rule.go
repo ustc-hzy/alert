@@ -1,43 +1,27 @@
 package rule_dao
 
 import (
+	"alert/core"
+	"alert/core/vo"
 	"time"
 )
 
-type OpType int32
-
-const (
-	NULL     OpType = -1
-	LARGER   OpType = 0
-	SMALLER  OpType = 1
-	EQUAL    OpType = 2
-	NOTEQUAL OpType = 3
-)
-
-type LogicType int32
-
-const (
-	NIL LogicType = -1
-	AND LogicType = 0
-	OR  LogicType = 1
-)
-
 type Rule struct {
-	RuleCode    string `gorm:"primary_key"`
-	RuleName    string
-	RoomId      uint
-	Expression  string
-	Description string
-	StartTime   time.Time
-	EndTime     time.Time
-	CreateTime  time.Time
-	UpdateTime  time.Time
+	RuleCode    string    `gorm:"rule_code"`
+	RuleName    string    `gorm:"rule_name"`
+	RoomId      uint      `gorm:"room_id"`
+	Expression  string    `gorm:"expression"`
+	Description string    `gorm:"description"`
+	StartTime   time.Time `gorm:"start_time"`
+	EndTime     time.Time `gorm:"end_time"`
+	CreateTime  time.Time `gorm:"create_time"`
+	UpdateTime  time.Time `gorm:"update_time"`
 }
 
 type RuleJson struct {
-	Rules         []Rule
-	Logic         LogicType
-	Op            OpType
+	Rules         []vo.RuleVo
+	Logic         core.LogicType
+	Op            core.OpType
 	Value         uint
 	IndicatorCode string
 }
