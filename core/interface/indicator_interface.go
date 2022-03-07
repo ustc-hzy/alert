@@ -1,7 +1,7 @@
 package _interface
 
 import (
-	indicator_dao "alert/core/dao/indicator_dao"
+	"alert/core/dao/indicator_dao"
 )
 
 type IndicatorInterface interface {

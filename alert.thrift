@@ -1,22 +1,6 @@
 namespace go api
 
-struct computeRequest {
-  1: string indicator_code
-  2: i64 roomID
-  3: i64 time_range
-}
 
-struct computeResponse {
-  1: i64 value
-}
-
-struct checkRequest {
-  1: string rule_code
-}
-
-struct checkResponse {
-  1: bool result
-}
 
 struct scheduleRequest {
   1: i64 frequency
@@ -24,14 +8,6 @@ struct scheduleRequest {
 
 struct scheduleResponse {
   1: bool success
-}
-
-service Compute {
-    computeResponse compute(1: computeRequest req)
-}
-
-service Check {
-    checkResponse check(1: checkRequest req)
 }
 
 service Schedule {

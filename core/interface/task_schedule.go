@@ -2,6 +2,6 @@ package _interface
 
 import "time"
 
-type TaskScheduleInterface interface {
+type ScheduleInterface interface {
 	Schedule(Frequency time.Duration)
 }

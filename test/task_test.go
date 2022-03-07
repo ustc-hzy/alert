@@ -10,7 +10,7 @@ import (
 )
 
 func TestTaskAdd(t *testing.T) {
-	task := task_dao.Task{TaskCode: "task", TaskName: "sum", RuleCode: "rule", Frequency: 30, NextTime: time.Now(), Status: true}
+	task := task_dao.Task{TaskCode: "taskTest", TaskName: "sum", RuleCode: "test12", Frequency: 30, NextTime: time.Now(), Status: true}
 	result := service.TaskServiceImpl{}.Add(task)
 	if !result {
 		log.Fatal("error")

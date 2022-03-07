@@ -1,16 +1,13 @@
 package main
 
 import (
-	"alert/core/vo"
-	"alert/handlers"
+	"alert/core/service"
 	api "alert/kitex_gen/api/schedule"
 	"log"
 )
 
-var Tasklist []vo.TaskVO
-
 func main() {
-	svr := api.NewServer(new(handlers.ScheduleImpl))
+	svr := api.NewServer(new(service.ScheduleImpl))
 
 	err := svr.Run()
 

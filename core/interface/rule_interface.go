@@ -1,7 +1,7 @@
 package _interface
 
 import (
-	rule_dao "alert/core/dao/rule_dao"
+	"alert/core/dao/rule_dao"
 )
 
 type RuleInterface interface {
