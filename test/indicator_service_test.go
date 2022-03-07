@@ -1,16 +1,17 @@
-package service
+package test
 
 import (
 	"alert/core"
 	"alert/core/dao/indicator_dao"
+	"alert/core/service"
 	"alert/core/vo"
 	"fmt"
 	"testing"
 	"time"
 )
 
-var indicator_service = IndicatorServiceImpl{}
-var ind_compute_service = IndComputeImpl{}
+var indicator_service = service.IndicatorServiceImpl{}
+var ind_compute_service = service.IndComputeImpl{}
 
 func TestAdd(t *testing.T) {
 

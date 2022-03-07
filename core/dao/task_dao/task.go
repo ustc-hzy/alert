@@ -1,12 +1,16 @@
 package task_dao
 
-import "time"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type Task struct {
-	TaskCode  string
-	TaskName  string
-	RuleCode  string
-	Frequency time.Duration
-	NextTime  time.Time
-	Status    bool
+	TaskCode  string        `gorm:"primaryKey" json:"task_code"`
+	TaskName  string        `json:"task_name"`
+	RuleCode  string        `json:"rule_code"`
+	Frequency time.Duration `json:"frequency"`
+	NextTime  time.Time     `json:"next_time"`
+	Status    bool          `json:"status"`
+	DeletedAt gorm.DeletedAt
 }
