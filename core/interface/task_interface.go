@@ -3,13 +3,14 @@ package _interface
 import (
 	"alert/core/dao/task_dao"
 	"alert/core/vo"
-	"time"
 )
 
 type TaskInterface interface {
-	Add(TaskCode string, TaskName string, RuleCode string, Frequency time.Duration, NextTime time.Time, Status bool) bool
-	Delete(TaskCode string) bool
-	Query(TaskCode string) task_dao.Task
-	Modify(TaskCode string, TaskName string, RuleCode string, Frequency time.Duration, NextTime time.Time, Status bool) bool
-	UpdateTime(task vo.TaskVO) bool
+	Add(task task_dao.Task) bool
+	Delete(taskCode string) bool
+	Query(taskCode string) vo.TaskVO
+	Modify(task task_dao.Task) bool
+	UpdateTime(task task_dao.Task) bool
+	UpdateStatus(task task_dao.Task, status bool) bool
+	TransferTaskVo(task task_dao.Task) vo.TaskVO
 }

@@ -13,7 +13,10 @@ import (
 type TaskServiceImpl struct{}
 type ScheduleImpl struct{}
 
-const TASKTABLENAME = "tasks"
+const (
+	TASKTABLENAME = "tasks"
+	POOLSIZE      = 10
+)
 
 func (i TaskServiceImpl) Add(task task_dao.Task) bool {
 	var count int64
@@ -92,24 +95,29 @@ func (i TaskServiceImpl) TransferTaskVo(task task_dao.Task) vo.TaskVO {
 
 // Schedule implements the ScheduleImpl interface.
 func (s *ScheduleImpl) Schedule(ctx context.Context, req *api.ScheduleRequest) (resp *api.ScheduleResponse, err error) {
-	// TODO: Your code here...
+	//get taskList
 	var taskList []task_dao.Task
 	res := DB.Debug().Table(TASKTABLENAME).Find(&taskList)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
 
+	ch := make(chan int, POOLSIZE)
+	//schedule
 	for i := 1; ; i++ {
-		for j := range taskList {
-			go WorkServiceImpl{}.Work(taskList[j].RuleCode)
+		for j, task := range taskList {
+			ch <- j
+			go WorkServiceImpl{}.Work(task.RuleCode, ch)
 			TaskServiceImpl{}.UpdateTime(taskList[j])
 		}
+		//write back to DB
 		if i&256 == 0 {
-			for k := range taskList {
-				TaskServiceImpl{}.Modify(taskList[k])
+			for _, m := range taskList {
+				TaskServiceImpl{}.Modify(m)
 			}
 		}
+		//sleep
 		time.Sleep(time.Duration(req.Frequency))
 	}
-	return &api.ScheduleResponse{Success: true}, nil
+	//return &api.ScheduleResponse{Success: true}, nil
 }
