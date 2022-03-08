@@ -76,16 +76,6 @@ func (i TaskServiceImpl) Modify(task task_dao.Task) bool {
 	return true
 }
 
-func (i TaskServiceImpl) UpdateTime(task task_dao.Task) bool {
-	task.NextTime = time.Now().Add(task.Frequency)
-	return true
-}
-
-func (i TaskServiceImpl) UpdateStatus(task task_dao.Task, status bool) bool {
-	task.Status = status
-	return true
-}
-
 func (i TaskServiceImpl) TransferTaskVo(task task_dao.Task) vo.TaskVO {
 	taskVo := vo.TaskVO{
 		TaskCode:  task.TaskCode,
@@ -123,11 +113,11 @@ func ScheduleTask(frequency int64) {
 			if task.NextTime.Before(time.Now()) {
 				ch <- j
 				go WorkServiceImpl{}.Work(task.RuleCode, ch)
-				TaskServiceImpl{}.UpdateTime(taskList[j])
+				taskList[j].NextTime = time.Now().Add(task.Frequency)
 			}
 		}
 		//write back to DB
-		if i&256 == 0 {
+		if i&16 == 0 {
 			for _, m := range taskList {
 				TaskServiceImpl{}.Modify(m)
 			}

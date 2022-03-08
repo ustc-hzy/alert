@@ -10,7 +10,5 @@ type TaskInterface interface {
 	Delete(taskCode string) bool
 	Query(taskCode string) vo.TaskVO
 	Modify(task task_dao.Task) bool
-	UpdateTime(task task_dao.Task) bool
-	UpdateStatus(task task_dao.Task, status bool) bool
 	TransferTaskVo(task task_dao.Task) vo.TaskVO
 }
