@@ -69,7 +69,7 @@ func (i TaskServiceImpl) Query(taskCode string) vo.TaskVO {
 }
 
 func (i TaskServiceImpl) Modify(task task_dao.Task) bool {
-	res := DB.Debug().Omit("next_time", "status").Where("task_code", task.TaskCode).Save(&task)
+	res := DB.Debug().Where("task_code", task.TaskCode).Save(&task)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
