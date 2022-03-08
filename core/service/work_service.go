@@ -8,14 +8,14 @@ import (
 
 type WorkServiceImpl struct{}
 
-func (i WorkServiceImpl) Work(RuleCode string) {
-	ret, err := RuleCheckImpl{}.Check(RuleCode)
+func (i WorkServiceImpl) Work(ruleCode string) {
+	ret, err := RuleCheckImpl{}.Check(ruleCode)
 	if err != nil {
 		log.Fatal(err)
 	}
 	if ret == true {
 		//TODO Alert
-		fmt.Println(RuleCode + " has been triggered")
+		fmt.Println(ruleCode + " has been triggered")
 	}
 }
 

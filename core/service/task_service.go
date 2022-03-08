@@ -34,8 +34,8 @@ func (i TaskServiceImpl) Add(task task_dao.Task) bool {
 	return true
 }
 
-func (i TaskServiceImpl) Delete(TaskCode string) bool {
-	res := DB.Debug().Table(TASKTABLENAME).Where("task_code = ? ", TaskCode).Delete(&task_dao.Task{})
+func (i TaskServiceImpl) Delete(taskCode string) bool {
+	res := DB.Debug().Table(TASKTABLENAME).Where("task_code = ? ", taskCode).Delete(&task_dao.Task{})
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 		return false
@@ -43,9 +43,9 @@ func (i TaskServiceImpl) Delete(TaskCode string) bool {
 	return true
 }
 
-func (i TaskServiceImpl) Query(TaskCode string) vo.TaskVO {
+func (i TaskServiceImpl) Query(taskCode string) vo.TaskVO {
 	task := task_dao.Task{}
-	res := DB.Debug().Table(TASKTABLENAME).Where("task_code = ?", TaskCode).Find(&task)
+	res := DB.Debug().Table(TASKTABLENAME).Where("task_code = ?", taskCode).Find(&task)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
@@ -93,20 +93,20 @@ func (i TaskServiceImpl) TransferTaskVo(task task_dao.Task) vo.TaskVO {
 // Schedule implements the ScheduleImpl interface.
 func (s *ScheduleImpl) Schedule(ctx context.Context, req *api.ScheduleRequest) (resp *api.ScheduleResponse, err error) {
 	// TODO: Your code here...
-	var TaskList []task_dao.Task
-	res := DB.Debug().Table(TASKTABLENAME).Find(&TaskList)
+	var taskList []task_dao.Task
+	res := DB.Debug().Table(TASKTABLENAME).Find(&taskList)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
 
 	for i := 1; ; i++ {
-		for j := range TaskList {
-			go WorkServiceImpl{}.Work(TaskList[j].RuleCode)
-			TaskServiceImpl{}.UpdateTime(TaskList[j])
+		for j := range taskList {
+			go WorkServiceImpl{}.Work(taskList[j].RuleCode)
+			TaskServiceImpl{}.UpdateTime(taskList[j])
 		}
 		if i&256 == 0 {
-			for k := range TaskList {
-				TaskServiceImpl{}.Modify(TaskList[k])
+			for k := range taskList {
+				TaskServiceImpl{}.Modify(taskList[k])
 			}
 		}
 		time.Sleep(time.Duration(req.Frequency))

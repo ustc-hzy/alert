@@ -1,16 +1,17 @@
-package service
+package test
 
 import (
 	"alert/core"
 	"alert/core/dao/rule_dao"
+	"alert/core/service"
 	"alert/core/vo"
 	"fmt"
 	"testing"
 	"time"
 )
 
-var rule_service = RuleServiceImpl{}
-var rule_check_service = RuleCheckImpl{}
+var rule_service = service.RuleServiceImpl{}
+var rule_check_service = service.RuleCheckImpl{}
 
 func TestRuleAdd(t *testing.T) {
 
