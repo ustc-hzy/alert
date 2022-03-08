@@ -7,11 +7,15 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"sync"
 	"time"
 )
 
 type TaskServiceImpl struct{}
 type ScheduleImpl struct{}
+
+var l sync.Mutex
+var lock = true
 
 const (
 	TASKTABLENAME = "tasks"
@@ -95,7 +99,12 @@ func (i TaskServiceImpl) TransferTaskVo(task task_dao.Task) vo.TaskVO {
 
 // Schedule implements the ScheduleImpl interface.
 func (s *ScheduleImpl) Schedule(ctx context.Context, req *api.ScheduleRequest) (resp *api.ScheduleResponse, err error) {
-	go ScheduleTask(req.Frequency)
+	l.Lock()
+	if lock {
+		go ScheduleTask(req.Frequency)
+		lock = false
+	}
+	l.Unlock()
 	return &api.ScheduleResponse{Success: true}, nil
 }
 
