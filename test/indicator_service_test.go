@@ -16,7 +16,7 @@ var ind_compute_service = service.IndComputeImpl{}
 func TestAdd(t *testing.T) {
 
 	indicator := indicator_dao.Indicator{
-		IndicatorCode: "test7",
+		IndicatorCode: "test98",
 		Name:          "test",
 		Expression:    "test",
 		Description:   "test",
@@ -36,7 +36,7 @@ func TestAdd(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 
-	result := indicator_service.Delete("test")
+	result := indicator_service.Delete("test98")
 	if !result {
 		t.Fatal("error")
 	}
@@ -44,13 +44,13 @@ func TestDelete(t *testing.T) {
 
 func TestQuery(t *testing.T) {
 
-	query := indicator_service.Query("test1")
+	query := indicator_service.Query("test99")
 	fmt.Println(query)
 }
 
 func TestModify(t *testing.T) {
 	indicator := indicator_dao.Indicator{
-		IndicatorCode: "test",
+		IndicatorCode: "test98",
 		Name:          "test",
 		Description:   "modify",
 		UpdateTime:    time.Now(),
@@ -87,7 +87,7 @@ func TestAddCompound(t *testing.T) {
 	}
 
 	indicator := indicator_dao.Indicator{
-		IndicatorCode: "nodeALL",
+		IndicatorCode: "nodeALL2",
 		Name:          "test",
 		Expression:    "test",
 		Description:   "test",

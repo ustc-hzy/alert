@@ -27,3 +27,5 @@ func InitDB() *gorm.DB {
 	DB.AutoMigrate(&indicator_dao.Indicator{}, &rule_dao.Rule{}, &task_dao.Task{})
 	return DB
 }
+
+var DB = InitDB()
