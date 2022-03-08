@@ -77,7 +77,7 @@ func (i TaskServiceImpl) Modify(task task_dao.Task) bool {
 }
 
 func (i TaskServiceImpl) UpdateTime(task task_dao.Task) bool {
-	task.NextTime = task.NextTime.Add(task.Frequency)
+	task.NextTime = time.Now().Add(task.Frequency)
 	return true
 }
 
@@ -120,9 +120,11 @@ func ScheduleTask(frequency int64) {
 	//schedule
 	for i := 1; ; i++ {
 		for j, task := range taskList {
-			ch <- j
-			go WorkServiceImpl{}.Work(task.RuleCode, ch)
-			TaskServiceImpl{}.UpdateTime(taskList[j])
+			if task.NextTime.Before(time.Now()) {
+				ch <- j
+				go WorkServiceImpl{}.Work(task.RuleCode, ch)
+				TaskServiceImpl{}.UpdateTime(taskList[j])
+			}
 		}
 		//write back to DB
 		if i&256 == 0 {
