@@ -1,6 +1,7 @@
 package service
 
 import (
+	"alert/core/dao"
 	"alert/core/dao/task_dao"
 	"alert/core/vo"
 	"alert/kitex_gen/api"
@@ -24,7 +25,7 @@ const (
 
 func (i TaskServiceImpl) Add(task task_dao.Task) bool {
 	var count int64
-	res := DB.Debug().Table(TASKTABLENAME).Where("task_code = ?", task.TaskCode).Count(&count)
+	res := dao.DB.Debug().Table(TASKTABLENAME).Where("task_code = ?", task.TaskCode).Count(&count)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 		return false
@@ -33,7 +34,7 @@ func (i TaskServiceImpl) Add(task task_dao.Task) bool {
 		log.Fatalln("the task already exists")
 		return false
 	}
-	resp := DB.Debug().Table(TASKTABLENAME).Create(&task)
+	resp := dao.DB.Debug().Table(TASKTABLENAME).Create(&task)
 	if resp.Error != nil {
 		log.Fatalln(resp.Error)
 		return false
@@ -42,7 +43,7 @@ func (i TaskServiceImpl) Add(task task_dao.Task) bool {
 }
 
 func (i TaskServiceImpl) Delete(taskCode string) bool {
-	res := DB.Debug().Table(TASKTABLENAME).Where("task_code = ? ", taskCode).Delete(&task_dao.Task{})
+	res := dao.DB.Debug().Table(TASKTABLENAME).Where("task_code = ? ", taskCode).Delete(&task_dao.Task{})
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 		return false
@@ -52,7 +53,7 @@ func (i TaskServiceImpl) Delete(taskCode string) bool {
 
 func (i TaskServiceImpl) Query(taskCode string) vo.TaskVO {
 	task := task_dao.Task{}
-	res := DB.Debug().Table(TASKTABLENAME).Where("task_code = ?", taskCode).Find(&task)
+	res := dao.DB.Debug().Table(TASKTABLENAME).Where("task_code = ?", taskCode).Find(&task)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
@@ -69,10 +70,20 @@ func (i TaskServiceImpl) Query(taskCode string) vo.TaskVO {
 }
 
 func (i TaskServiceImpl) Modify(task task_dao.Task) bool {
-	res := DB.Debug().Where("task_code", task.TaskCode).Save(&task)
+	res := dao.DB.Debug().Omit("next_time", "status").Where("task_code", task.TaskCode).Save(&task)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
+	return true
+}
+
+func (i TaskServiceImpl) UpdateTime(task task_dao.Task) bool {
+	task.NextTime = task.NextTime.Add(task.Frequency)
+	return true
+}
+
+func (i TaskServiceImpl) UpdateStatus(task task_dao.Task, status bool) bool {
+	task.Status = status
 	return true
 }
 
@@ -101,7 +112,7 @@ func (s *ScheduleImpl) Schedule(ctx context.Context, req *api.ScheduleRequest) (
 func ScheduleTask(frequency int64) {
 	//get taskList
 	var taskList []task_dao.Task
-	res := DB.Debug().Table(TASKTABLENAME).Find(&taskList)
+	res := dao.DB.Debug().Table(TASKTABLENAME).Find(&taskList)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
