@@ -95,6 +95,11 @@ func (i TaskServiceImpl) TransferTaskVo(task task_dao.Task) vo.TaskVO {
 
 // Schedule implements the ScheduleImpl interface.
 func (s *ScheduleImpl) Schedule(ctx context.Context, req *api.ScheduleRequest) (resp *api.ScheduleResponse, err error) {
+	go ScheduleTask(req.Frequency)
+	return &api.ScheduleResponse{Success: true}, nil
+}
+
+func ScheduleTask(frequency int64) {
 	//get taskList
 	var taskList []task_dao.Task
 	res := DB.Debug().Table(TASKTABLENAME).Find(&taskList)
@@ -117,7 +122,7 @@ func (s *ScheduleImpl) Schedule(ctx context.Context, req *api.ScheduleRequest) (
 			}
 		}
 		//sleep
-		time.Sleep(time.Duration(req.Frequency))
+		time.Sleep(time.Duration(frequency))
 	}
-	//return &api.ScheduleResponse{Success: true}, nil
+
 }

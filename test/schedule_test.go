@@ -15,9 +15,8 @@ func TestSchedule(t *testing.T) {
 		log.Fatal(err)
 	}
 	req := &api.ScheduleRequest{10000}
-	resp, err := cli.Schedule(context.Background(), req)
+	_, err = cli.Schedule(context.Background(), req)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(resp)
 }
