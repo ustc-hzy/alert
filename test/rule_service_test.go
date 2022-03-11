@@ -60,7 +60,7 @@ func TestRuleAddCompound(t *testing.T) {
 	ruleA := vo.RuleVo{
 		RuleCode:      "ruleA",
 		RuleName:      "ruleA",
-		RoomId:        0,
+		RoomId:        1,
 		Rules:         nil,
 		Logic:         core.NIL,
 		Op:            core.EQUAL,
@@ -75,7 +75,7 @@ func TestRuleAddCompound(t *testing.T) {
 	ruleB := vo.RuleVo{
 		RuleCode:      "ruleB",
 		RuleName:      "ruleB",
-		RoomId:        0,
+		RoomId:        1,
 		Rules:         nil,
 		Logic:         core.NIL,
 		Op:            core.EQUAL,
@@ -89,9 +89,9 @@ func TestRuleAddCompound(t *testing.T) {
 	}
 
 	rule := rule_dao.Rule{
-		RuleCode:    "ruleAll2",
-		RuleName:    "ruleAll2",
-		RoomId:      0,
+		RuleCode:    "ruleAll3",
+		RuleName:    "ruleAll3",
+		RoomId:      1,
 		Expression:  "test",
 		Description: "test",
 		StartTime:   time.Now(),
@@ -115,6 +115,6 @@ func TestRuleAddCompound(t *testing.T) {
 }
 
 func TestRuleComputeCompound(t *testing.T) {
-	val, _ := rule_check_service.Check("ruleAll2")
+	val, _ := rule_check_service.Check("ruleAll3")
 	fmt.Println(val)
 }

@@ -33,7 +33,7 @@ func (i RuleServiceImpl) Add(rule rule_dao.Rule, ruleJson rule_dao.RuleJson) boo
 
 	rule.Expression = i.Serialization(ruleJson)
 	if IsRuleExist(rule.RuleCode) {
-		log.Fatalln("the indicator code already exist")
+		log.Fatalln("the rule code already exist")
 		return false
 	}
 
@@ -126,7 +126,11 @@ func (i RuleCheckImpl) Check(ruleCode string) (bool, error) {
 func (i RuleCheckImpl) CheckLeaf(rule vo.RuleVo) (bool, error) {
 	if rule.Rules == nil && rule.Logic == -1 && rule.Op != -1 && rule.Value != 0 && len(rule.IndicatorCode) != 0 {
 		//if leaf
-		ind := IndComputeImpl{}.Compute(rule.IndicatorCode, rule.RoomId, rule.StartTime, rule.EndTime)
+		ind := IndComputeImpl{}.Compute(rule.IndicatorCode, vo.Condition{
+			RoomID:    rule.RoomId,
+			StartTime: "",
+			EndTime:   "",
+		})
 		switch rule.Op {
 		case core.LARGER:
 			if ind > rule.Value {

@@ -12,6 +12,11 @@ import (
 
 var indicator_service = service.IndicatorServiceImpl{}
 var ind_compute_service = service.IndComputeImpl{}
+var testCondition = vo.Condition{
+	RoomID:    1,
+	StartTime: "'2022-03-01'",
+	EndTime:   "'2022-03-02'",
+}
 
 func TestAdd(t *testing.T) {
 
@@ -59,7 +64,8 @@ func TestModify(t *testing.T) {
 }
 
 func TestCompute(t *testing.T) {
-	val := ind_compute_service.Compute("test2", 0, time.Now(), time.Now())
+	// left close right open
+	val := ind_compute_service.Compute("test2", testCondition)
 	fmt.Println(val)
 }
 
@@ -108,11 +114,6 @@ func TestAddCompound(t *testing.T) {
 }
 
 func TestComputeCompound(t *testing.T) {
-	val := ind_compute_service.Compute(
-		"nodeALL",
-		0,
-		time.Now(),
-		time.Now(),
-	)
+	val := ind_compute_service.Compute("nodeALL", testCondition)
 	fmt.Println(val)
 }

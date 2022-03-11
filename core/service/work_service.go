@@ -1,9 +1,9 @@
 package service
 
 import (
+	"alert/core/vo"
 	"fmt"
 	"log"
-	"time"
 )
 
 type WorkServiceImpl struct{}
@@ -20,6 +20,6 @@ func (i WorkServiceImpl) Work(ruleCode string, ch chan int) {
 	<-ch
 }
 
-func (i WorkServiceImpl) ComputeWork(IndicatorCode string, RoomID uint, StartTime, EndTime time.Time) uint {
-	return IndComputeImpl{}.Compute(IndicatorCode, RoomID, StartTime, EndTime)
+func (i WorkServiceImpl) ComputeWork(IndicatorCode string, condition vo.Condition) uint {
+	return IndComputeImpl{}.Compute(IndicatorCode, condition)
 }

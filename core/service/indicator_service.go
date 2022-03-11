@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"time"
+	"strconv"
 )
 
 type IndicatorServiceImpl struct{}
@@ -113,16 +113,18 @@ func IsIndicatorExist(indicatorCode string) bool {
 }
 
 //TODO: param condition
-func (i IndComputeImpl) Compute(indicatorCode string, roomID uint, startTime time.Time, endTime time.Time) uint {
+func (i IndComputeImpl) Compute(indicatorCode string, condition vo.Condition) uint {
 	ind := IndicatorServiceImpl{}.Query(indicatorCode)
-	return i.ComputeLeaf(ind)
+	return i.ComputeLeaf(ind, condition)
 }
 
-func (i IndComputeImpl) ComputeLeaf(ind vo.IndicatorVO) uint {
-	if ind.Indicators == nil && len(ind.Value) != 0 && ind.Caculate == -1 {
+func (i IndComputeImpl) ComputeLeaf(ind vo.IndicatorVO, condition vo.Condition) uint {
+	sql := ind.Value
+	if ind.Indicators == nil && len(sql) != 0 && ind.Caculate == -1 {
 		//leaf
+		sql += ConstructSql(condition)
 		var amount uint
-		res := dao.DB.Debug().Raw(ind.Value).Scan(&amount)
+		res := dao.DB.Debug().Raw(sql).Scan(&amount)
 		if res.Error != nil {
 			log.Fatalln(res.Error)
 		}
@@ -130,22 +132,40 @@ func (i IndComputeImpl) ComputeLeaf(ind vo.IndicatorVO) uint {
 	} else {
 		switch ind.Caculate {
 		case core.ADD:
-			value := i.ComputeLeaf(ind.Indicators[0]) + i.ComputeLeaf(ind.Indicators[1])
+			value := i.ComputeLeaf(ind.Indicators[0], condition) + i.ComputeLeaf(ind.Indicators[1], condition)
 			return value
 			break
 		case core.SUBTRACT:
-			value := i.ComputeLeaf(ind.Indicators[0]) - i.ComputeLeaf(ind.Indicators[1])
+			value := i.ComputeLeaf(ind.Indicators[0], condition) - i.ComputeLeaf(ind.Indicators[1], condition)
 			return value
 			break
 		case core.MULTIPLY:
-			value := i.ComputeLeaf(ind.Indicators[0]) * i.ComputeLeaf(ind.Indicators[1])
+			value := i.ComputeLeaf(ind.Indicators[0], condition) * i.ComputeLeaf(ind.Indicators[1], condition)
 			return value
 			break
 		case core.DIVIDE:
-			value := i.ComputeLeaf(ind.Indicators[0]) / i.ComputeLeaf(ind.Indicators[1])
+			value := i.ComputeLeaf(ind.Indicators[0], condition) / i.ComputeLeaf(ind.Indicators[1], condition)
 			return value
 			break
 		}
 	}
 	return 0
+}
+
+func ConstructSql(condition vo.Condition) string {
+	roomIdCondition := " where room_id = " + strconv.Itoa(int(condition.RoomID))
+	conditionAll := roomIdCondition
+	var startTimeCondition string
+	var endTimeCondition string
+	if condition.StartTime != "" {
+		starTime := condition.StartTime
+		startTimeCondition = " and deal_time >= " + starTime
+		conditionAll = conditionAll + startTimeCondition
+	}
+	if condition.EndTime != "" {
+		endTime := condition.EndTime
+		endTimeCondition = " and deal_time <= " + endTime
+		conditionAll = conditionAll + endTimeCondition
+	}
+	return conditionAll
 }

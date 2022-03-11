@@ -1,8 +1,10 @@
 package _interface
 
-import "time"
+import (
+	"alert/core/vo"
+)
 
 type WorkInterface interface {
 	Work(RuleCode string)
-	ComputeWork(IndicatorCode string, RoomID uint, StartTime time.Time, EndTime time.Time) uint
+	ComputeWork(IndicatorCode string, condition vo.Condition) uint
 }
