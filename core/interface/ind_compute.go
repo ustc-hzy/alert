@@ -5,6 +5,6 @@ import (
 )
 
 type IndComputeInterface interface {
-	Compute(IndicatorCode string, condition vo.Condition) uint
-	ComputeLeaf(vo vo.IndicatorVO, condition vo.Condition) uint
+	Compute(IndicatorCode string, condition vo.Condition) float64
+	ComputeLeaf(vo vo.IndicatorVO, condition vo.Condition) float64
 }

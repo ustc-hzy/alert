@@ -12,7 +12,7 @@ type RuleVo struct {
 	Rules         []RuleVo
 	Logic         core.LogicType
 	Op            core.OpType
-	Value         uint
+	Value         float64
 	IndicatorCode string
 	Description   string
 	StartTime     time.Time
