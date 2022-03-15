@@ -64,19 +64,19 @@ func (i TaskServiceImpl) Query(taskCode string) vo.TaskVO {
 }
 
 func (i TaskServiceImpl) Modify(task task_dao.Task) bool {
-	res := dao.DB.Debug().Omit("next_time", "status").Where("task_code", task.TaskCode).Save(&task)
+	res := dao.DB.Debug().Where("task_code", task.TaskCode).Save(&task)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
 	return true
 }
 
-func (i TaskServiceImpl) UpdateTime(task task_dao.Task) bool {
-	task.NextTime = task.NextTime.Add(task.Frequency)
+func (i TaskServiceImpl) UpdateTime(task *task_dao.Task) bool {
+	task.NextTime = time.Now().Add(task.Frequency)
 	return true
 }
 
-func (i TaskServiceImpl) UpdateStatus(task task_dao.Task, status bool) bool {
+func (i TaskServiceImpl) UpdateStatus(task *task_dao.Task, status bool) bool {
 	task.Status = status
 	return true
 }
@@ -92,41 +92,30 @@ func (i TaskServiceImpl) TransferTaskVo(task task_dao.Task) vo.TaskVO {
 	return taskVo
 }
 
-// Schedule implements the ScheduleImpl interface.
 func (s ScheduleImpl) Schedule(frequency time.Duration) {
-	s.ScheduleTask(frequency)
-}
-
-func (s ScheduleImpl) ScheduleTask(frequency time.Duration) {
-	//get taskList
-	var taskList []task_dao.Task
-	res := dao.DB.Debug().Table(TASKTABLENAME).Find(&taskList)
-	if res.Error != nil {
-		log.Fatalln(res.Error)
-	}
 
 	ch := make(chan int, POOLSIZE)
 	//schedule
 	for i := 1; ; i++ {
+		//get taskList
+		var taskList []task_dao.Task
+		res := dao.DB.Debug().Table(TASKTABLENAME).Find(&taskList)
+		if res.Error != nil {
+			log.Fatalln(res.Error)
+		}
+
+		//check
 		for j, task := range taskList {
 			if task.NextTime.Before(time.Now()) {
 				ch <- j
 				go WorkServiceImpl{}.Work(task.RuleCode, ch)
-				taskList[j].NextTime = time.Now().Add(task.Frequency)
-			}
-		}
-		//write back to DB
-		if i&16 == 0 {
-			for _, m := range taskList {
-				TaskServiceImpl{}.Modify(m)
-			}
+				TaskServiceImpl{}.UpdateTime(&taskList[j])
 
-			//refresh the list
-			res := dao.DB.Debug().Table(TASKTABLENAME).Find(&taskList)
-			if res.Error != nil {
-				log.Fatalln(res.Error)
+				//write back to DB
+				TaskServiceImpl{}.Modify(taskList[j])
 			}
 		}
+
 		//sleep
 		time.Sleep(frequency)
 	}

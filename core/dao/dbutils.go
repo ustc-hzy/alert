@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"alert/core/dao/alert_dao"
 	"alert/core/dao/indicator_dao"
 	"alert/core/dao/rule_dao"
 	"alert/core/dao/task_dao"
@@ -24,7 +25,7 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		log.Fatalf("failed to connect database:%v", err)
 	}
-	DB.AutoMigrate(&indicator_dao.Indicator{}, &rule_dao.Rule{}, &task_dao.Task{})
+	DB.AutoMigrate(&indicator_dao.Indicator{}, &rule_dao.Rule{}, &task_dao.Task{}, &alert_dao.Alert{})
 	return DB
 }
 
