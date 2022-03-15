@@ -26,7 +26,7 @@ func (i RuleServiceImpl) AntiSerialization(expression string) rule_dao.RuleJson 
 	var result rule_dao.RuleJson
 	err := json.Unmarshal(byteStream, &result)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 	return result
 }
@@ -34,13 +34,13 @@ func (i RuleServiceImpl) Add(rule rule_dao.Rule, ruleJson rule_dao.RuleJson) boo
 
 	rule.Expression = i.Serialization(ruleJson)
 	if IsRuleExist(rule.RuleCode) {
-		log.Fatalln("the rule code already exist")
+		log.Println("the rule code already exist")
 		return false
 	}
 
 	res1 := dao.DB.Debug().Create(&rule)
 	if res1.Error != nil {
-		log.Fatalln(res1.Error)
+		log.Println(res1.Error)
 		return false
 	}
 
@@ -49,7 +49,7 @@ func (i RuleServiceImpl) Add(rule rule_dao.Rule, ruleJson rule_dao.RuleJson) boo
 func (i RuleServiceImpl) Delete(ruleCode string) bool {
 	res := dao.DB.Debug().Table(RULETABLENAME).Where("rule_code = ? ", ruleCode).Update("is_delete", 1)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 		return false
 	}
 
@@ -60,10 +60,10 @@ func (i RuleServiceImpl) Query(ruleCode string) vo.RuleVo {
 	rule := rule_dao.Rule{}
 	res := dao.DB.Debug().Table(RULETABLENAME).Where("rule_code = ?", ruleCode).Where("is_delete = ?", 0).Find(&rule)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 	}
 	if res.RowsAffected > 1 {
-		log.Fatalln("code is not only")
+		log.Println("code is not only")
 	} else if res.RowsAffected == 0 {
 		log.Print("not found")
 		return vo.RuleVo{}
@@ -71,7 +71,7 @@ func (i RuleServiceImpl) Query(ruleCode string) vo.RuleVo {
 	fmt.Println(res.RowsAffected)
 	//fmt.Println(rule.Expression)
 	if rule.Expression == "" {
-		log.Fatalln("empty expression")
+		log.Println("empty expression")
 	}
 	//construct VO
 	rulejson := i.AntiSerialization(rule.Expression)
@@ -96,13 +96,13 @@ func (i RuleServiceImpl) Query(ruleCode string) vo.RuleVo {
 }
 func (i RuleServiceImpl) Modify(rule rule_dao.Rule) bool {
 	if !IsRuleExist(rule.RuleCode) {
-		log.Fatalln("the indicator code not exist")
+		log.Println("the indicator code not exist")
 		return false
 	}
 	rule.UpdateTime = time.Now()
 	res := dao.DB.Debug().Omit("create_time").Where("rule_code", rule.RuleCode).Where("is_delete = ?", 0).Save(&rule)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 	}
 	return true
 }
@@ -111,7 +111,7 @@ func IsRuleExist(ruleCode string) bool {
 	var count int64
 	res := dao.DB.Debug().Table(RULETABLENAME).Where("rule_code = ?", ruleCode).Where("is_delete = ?", 0).Count(&count)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 		return false
 	}
 	if count != 0 {
