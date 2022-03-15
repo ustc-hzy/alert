@@ -125,12 +125,13 @@ func TestRuleAddCompound(t *testing.T) {
 
 func TestCaseRuleAdd(t *testing.T) {
 
-	moneyRule := rule_service.Query("moneyRule")
-	//orderRule := rule_service.Query("orderRule")
-	pricePerPeopleRule := rule_service.Query("pricePerPeopleRule")
+	//moneyRule := rule_service.Query("moneyRule")moneyRule
+	//pricePerPeopleRule := rule_service.Query("pricePerPeopleRule")
+	tempRule := rule_service.Query("tempRule")
+	orderRule := rule_service.Query("orderRule")
 
 	rule := rule_dao.Rule{
-		RuleCode:    "tempRule",
+		RuleCode:    "testCaseRule",
 		RuleName:    "",
 		RoomId:      1,
 		Expression:  "",
@@ -140,7 +141,7 @@ func TestCaseRuleAdd(t *testing.T) {
 		CreateTime:  time.Now(),
 		UpdateTime:  time.Now(),
 	}
-	rules := []vo.RuleVo{moneyRule, pricePerPeopleRule}
+	rules := []vo.RuleVo{tempRule, orderRule}
 	ruleJson := rule_dao.RuleJson{
 		Rules:         rules,
 		Logic:         core.OR,
@@ -156,6 +157,6 @@ func TestCaseRuleAdd(t *testing.T) {
 }
 
 func TestRuleComputeCompound(t *testing.T) {
-	val, _ := rule_check_service.Check("ruleAll3")
+	val, _ := rule_check_service.Check("testCaseRule")
 	fmt.Println(val)
 }
