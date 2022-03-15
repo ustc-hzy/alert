@@ -1,7 +1,30 @@
 namespace go api
 
-struct Indicator {}
-struct IndicatorJson {}
+struct Indicator {
+  1: string IndicatorCode
+  2: string Name
+  3: string Expression
+  4: string Description
+  5: string TimeCreate
+  6: string TimeUpdate
+}
+
+struct IndicatorVO {
+  1: string IndicatorCode
+  2: string Name
+  3: list<IndicatorVO> Indicators
+  4: i64 Calculate
+  5: string	Value
+  6: string	Description
+  7: string TimeCreate
+  8: string TimeUpdate
+}
+
+struct IndicatorJson {
+  1: list<IndicatorVO> Indicators
+  2: i64 Calculate
+  3: string	Value
+}
 struct AddIndicatorRequest {
   1: Indicator indicator
   2: IndicatorJson indicatorJson
@@ -35,8 +58,42 @@ struct ModifyIndicatorResponse {
   1: bool success
 }
 
-struct Rule {}
-struct RuleJson {}
+struct Rule {
+  1: string RuleCode
+  2: string RuleName
+  3: i64 RoomId
+  4: string Expression
+  5: string Description
+  6: string TimeStart
+  7: string TimeEnd
+  8: string TimeCreate
+  9: string TimeUpdate
+}
+
+struct RuleJson {
+  1: list<RuleVo> Rules
+  2: i64 Logic
+  3: i64 Op
+  4: i64 Value
+  5: string IndicatorCode
+}
+
+struct RuleVo {
+	1: string RuleCode
+	2: string RuleName
+	3: i64 RoomId
+	4: list<RuleVo> Rules
+	5: i64 Logic
+	6: i64 Op
+	7: i64 Value
+	8: string IndicatorCode
+	9: string Description
+	10: string TimeStart
+	11: string TimeEnd
+	12: string TimeCreate
+	13: string TimeUpdate
+}
+
 struct AddRuleRequest {
   1: Rule rule
   2: RuleJson ruleJson
@@ -70,7 +127,14 @@ struct ModifyRuleResponse {
   1: bool success
 }
 
-struct Task {}
+struct Task {
+    1: string TaskCode
+	2: string TaskName
+	3: string RuleCode
+	4: i64 Frequency
+	6: string NextTime
+	7: bool Status
+}
 
 struct AddTaskRequest {
   1: Task task

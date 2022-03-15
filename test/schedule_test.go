@@ -1,22 +1,10 @@
 package test
 
 import (
-	"alert/kitex_gen/api"
-	"alert/kitex_gen/api/schedule"
-	"context"
-	"github.com/cloudwego/kitex/client"
-	"log"
+	"alert/core/service"
 	"testing"
 )
 
 func TestSchedule(t *testing.T) {
-	cli, err := schedule.NewClient("add", client.WithHostPorts("127.0.0.1:8888"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	req := &api.ScheduleRequest{10000}
-	_, err = cli.Schedule(context.Background(), req)
-	if err != nil {
-		log.Fatal(err)
-	}
+	service.ScheduleImpl{}.Schedule(50)
 }

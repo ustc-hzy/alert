@@ -4,19 +4,13 @@ import (
 	"alert/core/dao"
 	"alert/core/dao/task_dao"
 	"alert/core/vo"
-	"alert/kitex_gen/api"
-	"context"
 	"fmt"
 	"log"
-	"sync"
 	"time"
 )
 
 type TaskServiceImpl struct{}
 type ScheduleImpl struct{}
-
-var l sync.Mutex
-var lock = true
 
 const (
 	TASKTABLENAME = "tasks"
@@ -99,17 +93,11 @@ func (i TaskServiceImpl) TransferTaskVo(task task_dao.Task) vo.TaskVO {
 }
 
 // Schedule implements the ScheduleImpl interface.
-func (s *ScheduleImpl) Schedule(ctx context.Context, req *api.ScheduleRequest) (resp *api.ScheduleResponse, err error) {
-	l.Lock()
-	if lock {
-		go ScheduleTask(req.Frequency)
-		lock = false
-	}
-	l.Unlock()
-	return &api.ScheduleResponse{Success: true}, nil
+func (s ScheduleImpl) Schedule(frequency time.Duration) {
+	s.ScheduleTask(frequency)
 }
 
-func ScheduleTask(frequency int64) {
+func (s ScheduleImpl) ScheduleTask(frequency time.Duration) {
 	//get taskList
 	var taskList []task_dao.Task
 	res := dao.DB.Debug().Table(TASKTABLENAME).Find(&taskList)
@@ -132,9 +120,15 @@ func ScheduleTask(frequency int64) {
 			for _, m := range taskList {
 				TaskServiceImpl{}.Modify(m)
 			}
+
+			//refresh the list
+			res := dao.DB.Debug().Table(TASKTABLENAME).Find(&taskList)
+			if res.Error != nil {
+				log.Fatalln(res.Error)
+			}
 		}
 		//sleep
-		time.Sleep(time.Duration(frequency))
+		time.Sleep(frequency)
 	}
 
 }

@@ -10,13 +10,68 @@ import (
 )
 
 type Indicator struct {
+	IndicatorCode string `thrift:"IndicatorCode,1" json:"IndicatorCode"`
+	Name          string `thrift:"Name,2" json:"Name"`
+	Expression    string `thrift:"Expression,3" json:"Expression"`
+	Description   string `thrift:"Description,4" json:"Description"`
+	TimeCreate    string `thrift:"TimeCreate,5" json:"TimeCreate"`
+	TimeUpdate    string `thrift:"TimeUpdate,6" json:"TimeUpdate"`
 }
 
 func NewIndicator() *Indicator {
 	return &Indicator{}
 }
 
-var fieldIDToName_Indicator = map[int16]string{}
+func (p *Indicator) GetIndicatorCode() (v string) {
+	return p.IndicatorCode
+}
+
+func (p *Indicator) GetName() (v string) {
+	return p.Name
+}
+
+func (p *Indicator) GetExpression() (v string) {
+	return p.Expression
+}
+
+func (p *Indicator) GetDescription() (v string) {
+	return p.Description
+}
+
+func (p *Indicator) GetTimeCreate() (v string) {
+	return p.TimeCreate
+}
+
+func (p *Indicator) GetTimeUpdate() (v string) {
+	return p.TimeUpdate
+}
+func (p *Indicator) SetIndicatorCode(val string) {
+	p.IndicatorCode = val
+}
+func (p *Indicator) SetName(val string) {
+	p.Name = val
+}
+func (p *Indicator) SetExpression(val string) {
+	p.Expression = val
+}
+func (p *Indicator) SetDescription(val string) {
+	p.Description = val
+}
+func (p *Indicator) SetTimeCreate(val string) {
+	p.TimeCreate = val
+}
+func (p *Indicator) SetTimeUpdate(val string) {
+	p.TimeUpdate = val
+}
+
+var fieldIDToName_Indicator = map[int16]string{
+	1: "IndicatorCode",
+	2: "Name",
+	3: "Expression",
+	4: "Description",
+	5: "TimeCreate",
+	6: "TimeUpdate",
+}
 
 func (p *Indicator) Read(iprot thrift.TProtocol) (err error) {
 
@@ -35,8 +90,72 @@ func (p *Indicator) Read(iprot thrift.TProtocol) (err error) {
 		if fieldTypeId == thrift.STOP {
 			break
 		}
-		if err = iprot.Skip(fieldTypeId); err != nil {
-			goto SkipFieldTypeError
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		}
 
 		if err = iprot.ReadFieldEnd(); err != nil {
@@ -52,8 +171,10 @@ ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-SkipFieldTypeError:
-	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_Indicator[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
@@ -61,11 +182,90 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
+func (p *Indicator) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.IndicatorCode = v
+	}
+	return nil
+}
+
+func (p *Indicator) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Name = v
+	}
+	return nil
+}
+
+func (p *Indicator) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Expression = v
+	}
+	return nil
+}
+
+func (p *Indicator) ReadField4(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Description = v
+	}
+	return nil
+}
+
+func (p *Indicator) ReadField5(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeCreate = v
+	}
+	return nil
+}
+
+func (p *Indicator) ReadField6(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeUpdate = v
+	}
+	return nil
+}
+
 func (p *Indicator) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
 	if err = oprot.WriteStructBegin("Indicator"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
 
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
@@ -77,10 +277,114 @@ func (p *Indicator) Write(oprot thrift.TProtocol) (err error) {
 	return nil
 WriteStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *Indicator) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("IndicatorCode", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.IndicatorCode); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *Indicator) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Name", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Name); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *Indicator) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Expression", thrift.STRING, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Expression); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *Indicator) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Description", thrift.STRING, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Description); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *Indicator) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeCreate", thrift.STRING, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeCreate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *Indicator) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeUpdate", thrift.STRING, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeUpdate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
 func (p *Indicator) String() string {
@@ -96,17 +400,704 @@ func (p *Indicator) DeepEqual(ano *Indicator) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
+	if !p.Field1DeepEqual(ano.IndicatorCode) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Name) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Expression) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Description) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.TimeCreate) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.TimeUpdate) {
+		return false
+	}
+	return true
+}
+
+func (p *Indicator) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.IndicatorCode, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Indicator) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Name, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Indicator) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.Expression, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Indicator) Field4DeepEqual(src string) bool {
+
+	if strings.Compare(p.Description, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Indicator) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeCreate, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Indicator) Field6DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeUpdate, src) != 0 {
+		return false
+	}
+	return true
+}
+
+type IndicatorVO struct {
+	IndicatorCode string         `thrift:"IndicatorCode,1" json:"IndicatorCode"`
+	Name          string         `thrift:"Name,2" json:"Name"`
+	Indicators    []*IndicatorVO `thrift:"Indicators,3" json:"Indicators"`
+	Calculate     int64          `thrift:"Calculate,4" json:"Calculate"`
+	Value         string         `thrift:"Value,5" json:"Value"`
+	Description   string         `thrift:"Description,6" json:"Description"`
+	TimeCreate    string         `thrift:"TimeCreate,7" json:"TimeCreate"`
+	TimeUpdate    string         `thrift:"TimeUpdate,8" json:"TimeUpdate"`
+}
+
+func NewIndicatorVO() *IndicatorVO {
+	return &IndicatorVO{}
+}
+
+func (p *IndicatorVO) GetIndicatorCode() (v string) {
+	return p.IndicatorCode
+}
+
+func (p *IndicatorVO) GetName() (v string) {
+	return p.Name
+}
+
+func (p *IndicatorVO) GetIndicators() (v []*IndicatorVO) {
+	return p.Indicators
+}
+
+func (p *IndicatorVO) GetCalculate() (v int64) {
+	return p.Calculate
+}
+
+func (p *IndicatorVO) GetValue() (v string) {
+	return p.Value
+}
+
+func (p *IndicatorVO) GetDescription() (v string) {
+	return p.Description
+}
+
+func (p *IndicatorVO) GetTimeCreate() (v string) {
+	return p.TimeCreate
+}
+
+func (p *IndicatorVO) GetTimeUpdate() (v string) {
+	return p.TimeUpdate
+}
+func (p *IndicatorVO) SetIndicatorCode(val string) {
+	p.IndicatorCode = val
+}
+func (p *IndicatorVO) SetName(val string) {
+	p.Name = val
+}
+func (p *IndicatorVO) SetIndicators(val []*IndicatorVO) {
+	p.Indicators = val
+}
+func (p *IndicatorVO) SetCalculate(val int64) {
+	p.Calculate = val
+}
+func (p *IndicatorVO) SetValue(val string) {
+	p.Value = val
+}
+func (p *IndicatorVO) SetDescription(val string) {
+	p.Description = val
+}
+func (p *IndicatorVO) SetTimeCreate(val string) {
+	p.TimeCreate = val
+}
+func (p *IndicatorVO) SetTimeUpdate(val string) {
+	p.TimeUpdate = val
+}
+
+var fieldIDToName_IndicatorVO = map[int16]string{
+	1: "IndicatorCode",
+	2: "Name",
+	3: "Indicators",
+	4: "Calculate",
+	5: "Value",
+	6: "Description",
+	7: "TimeCreate",
+	8: "TimeUpdate",
+}
+
+func (p *IndicatorVO) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 7:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_IndicatorVO[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *IndicatorVO) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.IndicatorCode = v
+	}
+	return nil
+}
+
+func (p *IndicatorVO) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Name = v
+	}
+	return nil
+}
+
+func (p *IndicatorVO) ReadField3(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.Indicators = make([]*IndicatorVO, 0, size)
+	for i := 0; i < size; i++ {
+		_elem := NewIndicatorVO()
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		p.Indicators = append(p.Indicators, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *IndicatorVO) ReadField4(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Calculate = v
+	}
+	return nil
+}
+
+func (p *IndicatorVO) ReadField5(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Value = v
+	}
+	return nil
+}
+
+func (p *IndicatorVO) ReadField6(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Description = v
+	}
+	return nil
+}
+
+func (p *IndicatorVO) ReadField7(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeCreate = v
+	}
+	return nil
+}
+
+func (p *IndicatorVO) ReadField8(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeUpdate = v
+	}
+	return nil
+}
+
+func (p *IndicatorVO) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("IndicatorVO"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *IndicatorVO) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("IndicatorCode", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.IndicatorCode); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *IndicatorVO) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Name", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Name); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *IndicatorVO) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Indicators", thrift.LIST, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Indicators)); err != nil {
+		return err
+	}
+	for _, v := range p.Indicators {
+		if err := v.Write(oprot); err != nil {
+			return err
+		}
+	}
+	if err := oprot.WriteListEnd(); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *IndicatorVO) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Calculate", thrift.I64, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Calculate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *IndicatorVO) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Value", thrift.STRING, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Value); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *IndicatorVO) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Description", thrift.STRING, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Description); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *IndicatorVO) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeCreate", thrift.STRING, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeCreate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *IndicatorVO) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeUpdate", thrift.STRING, 8); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeUpdate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *IndicatorVO) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("IndicatorVO(%+v)", *p)
+}
+
+func (p *IndicatorVO) DeepEqual(ano *IndicatorVO) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.IndicatorCode) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Name) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Indicators) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Calculate) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Value) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.Description) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.TimeCreate) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.TimeUpdate) {
+		return false
+	}
+	return true
+}
+
+func (p *IndicatorVO) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.IndicatorCode, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *IndicatorVO) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Name, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *IndicatorVO) Field3DeepEqual(src []*IndicatorVO) bool {
+
+	if len(p.Indicators) != len(src) {
+		return false
+	}
+	for i, v := range p.Indicators {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+func (p *IndicatorVO) Field4DeepEqual(src int64) bool {
+
+	if p.Calculate != src {
+		return false
+	}
+	return true
+}
+func (p *IndicatorVO) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.Value, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *IndicatorVO) Field6DeepEqual(src string) bool {
+
+	if strings.Compare(p.Description, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *IndicatorVO) Field7DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeCreate, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *IndicatorVO) Field8DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeUpdate, src) != 0 {
+		return false
+	}
 	return true
 }
 
 type IndicatorJson struct {
+	Indicators []*IndicatorVO `thrift:"Indicators,1" json:"Indicators"`
+	Calculate  int64          `thrift:"Calculate,2" json:"Calculate"`
+	Value      string         `thrift:"Value,3" json:"Value"`
 }
 
 func NewIndicatorJson() *IndicatorJson {
 	return &IndicatorJson{}
 }
 
-var fieldIDToName_IndicatorJson = map[int16]string{}
+func (p *IndicatorJson) GetIndicators() (v []*IndicatorVO) {
+	return p.Indicators
+}
+
+func (p *IndicatorJson) GetCalculate() (v int64) {
+	return p.Calculate
+}
+
+func (p *IndicatorJson) GetValue() (v string) {
+	return p.Value
+}
+func (p *IndicatorJson) SetIndicators(val []*IndicatorVO) {
+	p.Indicators = val
+}
+func (p *IndicatorJson) SetCalculate(val int64) {
+	p.Calculate = val
+}
+func (p *IndicatorJson) SetValue(val string) {
+	p.Value = val
+}
+
+var fieldIDToName_IndicatorJson = map[int16]string{
+	1: "Indicators",
+	2: "Calculate",
+	3: "Value",
+}
 
 func (p *IndicatorJson) Read(iprot thrift.TProtocol) (err error) {
 
@@ -125,8 +1116,42 @@ func (p *IndicatorJson) Read(iprot thrift.TProtocol) (err error) {
 		if fieldTypeId == thrift.STOP {
 			break
 		}
-		if err = iprot.Skip(fieldTypeId); err != nil {
-			goto SkipFieldTypeError
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		}
 
 		if err = iprot.ReadFieldEnd(); err != nil {
@@ -142,8 +1167,10 @@ ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-SkipFieldTypeError:
-	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_IndicatorJson[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
@@ -151,11 +1178,62 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
+func (p *IndicatorJson) ReadField1(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.Indicators = make([]*IndicatorVO, 0, size)
+	for i := 0; i < size; i++ {
+		_elem := NewIndicatorVO()
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		p.Indicators = append(p.Indicators, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *IndicatorJson) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Calculate = v
+	}
+	return nil
+}
+
+func (p *IndicatorJson) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Value = v
+	}
+	return nil
+}
+
 func (p *IndicatorJson) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
 	if err = oprot.WriteStructBegin("IndicatorJson"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
 
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
@@ -167,10 +1245,71 @@ func (p *IndicatorJson) Write(oprot thrift.TProtocol) (err error) {
 	return nil
 WriteStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *IndicatorJson) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Indicators", thrift.LIST, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Indicators)); err != nil {
+		return err
+	}
+	for _, v := range p.Indicators {
+		if err := v.Write(oprot); err != nil {
+			return err
+		}
+	}
+	if err := oprot.WriteListEnd(); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *IndicatorJson) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Calculate", thrift.I64, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Calculate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *IndicatorJson) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Value", thrift.STRING, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Value); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
 func (p *IndicatorJson) String() string {
@@ -184,6 +1323,43 @@ func (p *IndicatorJson) DeepEqual(ano *IndicatorJson) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Indicators) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Calculate) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Value) {
+		return false
+	}
+	return true
+}
+
+func (p *IndicatorJson) Field1DeepEqual(src []*IndicatorVO) bool {
+
+	if len(p.Indicators) != len(src) {
+		return false
+	}
+	for i, v := range p.Indicators {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+func (p *IndicatorJson) Field2DeepEqual(src int64) bool {
+
+	if p.Calculate != src {
+		return false
+	}
+	return true
+}
+func (p *IndicatorJson) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.Value, src) != 0 {
 		return false
 	}
 	return true
@@ -1561,13 +2737,95 @@ func (p *ModifyIndicatorResponse) Field1DeepEqual(src bool) bool {
 }
 
 type Rule struct {
+	RuleCode    string `thrift:"RuleCode,1" json:"RuleCode"`
+	RuleName    string `thrift:"RuleName,2" json:"RuleName"`
+	RoomId      int64  `thrift:"RoomId,3" json:"RoomId"`
+	Expression  string `thrift:"Expression,4" json:"Expression"`
+	Description string `thrift:"Description,5" json:"Description"`
+	TimeStart   string `thrift:"TimeStart,6" json:"TimeStart"`
+	TimeEnd     string `thrift:"TimeEnd,7" json:"TimeEnd"`
+	TimeCreate  string `thrift:"TimeCreate,8" json:"TimeCreate"`
+	TimeUpdate  string `thrift:"TimeUpdate,9" json:"TimeUpdate"`
 }
 
 func NewRule() *Rule {
 	return &Rule{}
 }
 
-var fieldIDToName_Rule = map[int16]string{}
+func (p *Rule) GetRuleCode() (v string) {
+	return p.RuleCode
+}
+
+func (p *Rule) GetRuleName() (v string) {
+	return p.RuleName
+}
+
+func (p *Rule) GetRoomId() (v int64) {
+	return p.RoomId
+}
+
+func (p *Rule) GetExpression() (v string) {
+	return p.Expression
+}
+
+func (p *Rule) GetDescription() (v string) {
+	return p.Description
+}
+
+func (p *Rule) GetTimeStart() (v string) {
+	return p.TimeStart
+}
+
+func (p *Rule) GetTimeEnd() (v string) {
+	return p.TimeEnd
+}
+
+func (p *Rule) GetTimeCreate() (v string) {
+	return p.TimeCreate
+}
+
+func (p *Rule) GetTimeUpdate() (v string) {
+	return p.TimeUpdate
+}
+func (p *Rule) SetRuleCode(val string) {
+	p.RuleCode = val
+}
+func (p *Rule) SetRuleName(val string) {
+	p.RuleName = val
+}
+func (p *Rule) SetRoomId(val int64) {
+	p.RoomId = val
+}
+func (p *Rule) SetExpression(val string) {
+	p.Expression = val
+}
+func (p *Rule) SetDescription(val string) {
+	p.Description = val
+}
+func (p *Rule) SetTimeStart(val string) {
+	p.TimeStart = val
+}
+func (p *Rule) SetTimeEnd(val string) {
+	p.TimeEnd = val
+}
+func (p *Rule) SetTimeCreate(val string) {
+	p.TimeCreate = val
+}
+func (p *Rule) SetTimeUpdate(val string) {
+	p.TimeUpdate = val
+}
+
+var fieldIDToName_Rule = map[int16]string{
+	1: "RuleCode",
+	2: "RuleName",
+	3: "RoomId",
+	4: "Expression",
+	5: "Description",
+	6: "TimeStart",
+	7: "TimeEnd",
+	8: "TimeCreate",
+	9: "TimeUpdate",
+}
 
 func (p *Rule) Read(iprot thrift.TProtocol) (err error) {
 
@@ -1586,8 +2844,102 @@ func (p *Rule) Read(iprot thrift.TProtocol) (err error) {
 		if fieldTypeId == thrift.STOP {
 			break
 		}
-		if err = iprot.Skip(fieldTypeId); err != nil {
-			goto SkipFieldTypeError
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 7:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 9:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		}
 
 		if err = iprot.ReadFieldEnd(); err != nil {
@@ -1603,8 +2955,10 @@ ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-SkipFieldTypeError:
-	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_Rule[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
@@ -1612,11 +2966,129 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
+func (p *Rule) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.RuleCode = v
+	}
+	return nil
+}
+
+func (p *Rule) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.RuleName = v
+	}
+	return nil
+}
+
+func (p *Rule) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.RoomId = v
+	}
+	return nil
+}
+
+func (p *Rule) ReadField4(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Expression = v
+	}
+	return nil
+}
+
+func (p *Rule) ReadField5(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Description = v
+	}
+	return nil
+}
+
+func (p *Rule) ReadField6(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeStart = v
+	}
+	return nil
+}
+
+func (p *Rule) ReadField7(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeEnd = v
+	}
+	return nil
+}
+
+func (p *Rule) ReadField8(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeCreate = v
+	}
+	return nil
+}
+
+func (p *Rule) ReadField9(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeUpdate = v
+	}
+	return nil
+}
+
 func (p *Rule) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
 	if err = oprot.WriteStructBegin("Rule"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
+			goto WriteFieldError
+		}
 
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
@@ -1628,10 +3100,165 @@ func (p *Rule) Write(oprot thrift.TProtocol) (err error) {
 	return nil
 WriteStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *Rule) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("RuleCode", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.RuleCode); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *Rule) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("RuleName", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.RuleName); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *Rule) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("RoomId", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.RoomId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *Rule) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Expression", thrift.STRING, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Expression); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *Rule) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Description", thrift.STRING, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Description); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *Rule) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeStart", thrift.STRING, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeStart); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *Rule) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeEnd", thrift.STRING, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeEnd); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *Rule) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeCreate", thrift.STRING, 8); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeCreate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *Rule) writeField9(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeUpdate", thrift.STRING, 9); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeUpdate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
 }
 
 func (p *Rule) String() string {
@@ -1647,17 +3274,154 @@ func (p *Rule) DeepEqual(ano *Rule) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
+	if !p.Field1DeepEqual(ano.RuleCode) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.RuleName) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.RoomId) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Expression) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Description) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.TimeStart) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.TimeEnd) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.TimeCreate) {
+		return false
+	}
+	if !p.Field9DeepEqual(ano.TimeUpdate) {
+		return false
+	}
+	return true
+}
+
+func (p *Rule) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.RuleCode, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Rule) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.RuleName, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Rule) Field3DeepEqual(src int64) bool {
+
+	if p.RoomId != src {
+		return false
+	}
+	return true
+}
+func (p *Rule) Field4DeepEqual(src string) bool {
+
+	if strings.Compare(p.Expression, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Rule) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.Description, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Rule) Field6DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeStart, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Rule) Field7DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeEnd, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Rule) Field8DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeCreate, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Rule) Field9DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeUpdate, src) != 0 {
+		return false
+	}
 	return true
 }
 
 type RuleJson struct {
+	Rules         []*RuleVo `thrift:"Rules,1" json:"Rules"`
+	Logic         int64     `thrift:"Logic,2" json:"Logic"`
+	Op            int64     `thrift:"Op,3" json:"Op"`
+	Value         int64     `thrift:"Value,4" json:"Value"`
+	IndicatorCode string    `thrift:"IndicatorCode,5" json:"IndicatorCode"`
 }
 
 func NewRuleJson() *RuleJson {
 	return &RuleJson{}
 }
 
-var fieldIDToName_RuleJson = map[int16]string{}
+func (p *RuleJson) GetRules() (v []*RuleVo) {
+	return p.Rules
+}
+
+func (p *RuleJson) GetLogic() (v int64) {
+	return p.Logic
+}
+
+func (p *RuleJson) GetOp() (v int64) {
+	return p.Op
+}
+
+func (p *RuleJson) GetValue() (v int64) {
+	return p.Value
+}
+
+func (p *RuleJson) GetIndicatorCode() (v string) {
+	return p.IndicatorCode
+}
+func (p *RuleJson) SetRules(val []*RuleVo) {
+	p.Rules = val
+}
+func (p *RuleJson) SetLogic(val int64) {
+	p.Logic = val
+}
+func (p *RuleJson) SetOp(val int64) {
+	p.Op = val
+}
+func (p *RuleJson) SetValue(val int64) {
+	p.Value = val
+}
+func (p *RuleJson) SetIndicatorCode(val string) {
+	p.IndicatorCode = val
+}
+
+var fieldIDToName_RuleJson = map[int16]string{
+	1: "Rules",
+	2: "Logic",
+	3: "Op",
+	4: "Value",
+	5: "IndicatorCode",
+}
 
 func (p *RuleJson) Read(iprot thrift.TProtocol) (err error) {
 
@@ -1676,8 +3440,62 @@ func (p *RuleJson) Read(iprot thrift.TProtocol) (err error) {
 		if fieldTypeId == thrift.STOP {
 			break
 		}
-		if err = iprot.Skip(fieldTypeId); err != nil {
-			goto SkipFieldTypeError
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		}
 
 		if err = iprot.ReadFieldEnd(); err != nil {
@@ -1693,8 +3511,10 @@ ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-SkipFieldTypeError:
-	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RuleJson[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
@@ -1702,11 +3522,88 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
+func (p *RuleJson) ReadField1(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.Rules = make([]*RuleVo, 0, size)
+	for i := 0; i < size; i++ {
+		_elem := NewRuleVo()
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		p.Rules = append(p.Rules, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *RuleJson) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Logic = v
+	}
+	return nil
+}
+
+func (p *RuleJson) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Op = v
+	}
+	return nil
+}
+
+func (p *RuleJson) ReadField4(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Value = v
+	}
+	return nil
+}
+
+func (p *RuleJson) ReadField5(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.IndicatorCode = v
+	}
+	return nil
+}
+
 func (p *RuleJson) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
 	if err = oprot.WriteStructBegin("RuleJson"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
 
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
@@ -1718,10 +3615,105 @@ func (p *RuleJson) Write(oprot thrift.TProtocol) (err error) {
 	return nil
 WriteStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *RuleJson) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Rules", thrift.LIST, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Rules)); err != nil {
+		return err
+	}
+	for _, v := range p.Rules {
+		if err := v.Write(oprot); err != nil {
+			return err
+		}
+	}
+	if err := oprot.WriteListEnd(); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *RuleJson) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Logic", thrift.I64, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Logic); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *RuleJson) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Op", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Op); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *RuleJson) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Value", thrift.I64, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Value); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *RuleJson) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("IndicatorCode", thrift.STRING, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.IndicatorCode); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
 func (p *RuleJson) String() string {
@@ -1735,6 +3727,956 @@ func (p *RuleJson) DeepEqual(ano *RuleJson) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Rules) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Logic) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Op) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Value) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.IndicatorCode) {
+		return false
+	}
+	return true
+}
+
+func (p *RuleJson) Field1DeepEqual(src []*RuleVo) bool {
+
+	if len(p.Rules) != len(src) {
+		return false
+	}
+	for i, v := range p.Rules {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+func (p *RuleJson) Field2DeepEqual(src int64) bool {
+
+	if p.Logic != src {
+		return false
+	}
+	return true
+}
+func (p *RuleJson) Field3DeepEqual(src int64) bool {
+
+	if p.Op != src {
+		return false
+	}
+	return true
+}
+func (p *RuleJson) Field4DeepEqual(src int64) bool {
+
+	if p.Value != src {
+		return false
+	}
+	return true
+}
+func (p *RuleJson) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.IndicatorCode, src) != 0 {
+		return false
+	}
+	return true
+}
+
+type RuleVo struct {
+	RuleCode      string    `thrift:"RuleCode,1" json:"RuleCode"`
+	RuleName      string    `thrift:"RuleName,2" json:"RuleName"`
+	RoomId        int64     `thrift:"RoomId,3" json:"RoomId"`
+	Rules         []*RuleVo `thrift:"Rules,4" json:"Rules"`
+	Logic         int64     `thrift:"Logic,5" json:"Logic"`
+	Op            int64     `thrift:"Op,6" json:"Op"`
+	Value         int64     `thrift:"Value,7" json:"Value"`
+	IndicatorCode string    `thrift:"IndicatorCode,8" json:"IndicatorCode"`
+	Description   string    `thrift:"Description,9" json:"Description"`
+	TimeStart     string    `thrift:"TimeStart,10" json:"TimeStart"`
+	TimeEnd       string    `thrift:"TimeEnd,11" json:"TimeEnd"`
+	TimeCreate    string    `thrift:"TimeCreate,12" json:"TimeCreate"`
+	TimeUpdate    string    `thrift:"TimeUpdate,13" json:"TimeUpdate"`
+}
+
+func NewRuleVo() *RuleVo {
+	return &RuleVo{}
+}
+
+func (p *RuleVo) GetRuleCode() (v string) {
+	return p.RuleCode
+}
+
+func (p *RuleVo) GetRuleName() (v string) {
+	return p.RuleName
+}
+
+func (p *RuleVo) GetRoomId() (v int64) {
+	return p.RoomId
+}
+
+func (p *RuleVo) GetRules() (v []*RuleVo) {
+	return p.Rules
+}
+
+func (p *RuleVo) GetLogic() (v int64) {
+	return p.Logic
+}
+
+func (p *RuleVo) GetOp() (v int64) {
+	return p.Op
+}
+
+func (p *RuleVo) GetValue() (v int64) {
+	return p.Value
+}
+
+func (p *RuleVo) GetIndicatorCode() (v string) {
+	return p.IndicatorCode
+}
+
+func (p *RuleVo) GetDescription() (v string) {
+	return p.Description
+}
+
+func (p *RuleVo) GetTimeStart() (v string) {
+	return p.TimeStart
+}
+
+func (p *RuleVo) GetTimeEnd() (v string) {
+	return p.TimeEnd
+}
+
+func (p *RuleVo) GetTimeCreate() (v string) {
+	return p.TimeCreate
+}
+
+func (p *RuleVo) GetTimeUpdate() (v string) {
+	return p.TimeUpdate
+}
+func (p *RuleVo) SetRuleCode(val string) {
+	p.RuleCode = val
+}
+func (p *RuleVo) SetRuleName(val string) {
+	p.RuleName = val
+}
+func (p *RuleVo) SetRoomId(val int64) {
+	p.RoomId = val
+}
+func (p *RuleVo) SetRules(val []*RuleVo) {
+	p.Rules = val
+}
+func (p *RuleVo) SetLogic(val int64) {
+	p.Logic = val
+}
+func (p *RuleVo) SetOp(val int64) {
+	p.Op = val
+}
+func (p *RuleVo) SetValue(val int64) {
+	p.Value = val
+}
+func (p *RuleVo) SetIndicatorCode(val string) {
+	p.IndicatorCode = val
+}
+func (p *RuleVo) SetDescription(val string) {
+	p.Description = val
+}
+func (p *RuleVo) SetTimeStart(val string) {
+	p.TimeStart = val
+}
+func (p *RuleVo) SetTimeEnd(val string) {
+	p.TimeEnd = val
+}
+func (p *RuleVo) SetTimeCreate(val string) {
+	p.TimeCreate = val
+}
+func (p *RuleVo) SetTimeUpdate(val string) {
+	p.TimeUpdate = val
+}
+
+var fieldIDToName_RuleVo = map[int16]string{
+	1:  "RuleCode",
+	2:  "RuleName",
+	3:  "RoomId",
+	4:  "Rules",
+	5:  "Logic",
+	6:  "Op",
+	7:  "Value",
+	8:  "IndicatorCode",
+	9:  "Description",
+	10: "TimeStart",
+	11: "TimeEnd",
+	12: "TimeCreate",
+	13: "TimeUpdate",
+}
+
+func (p *RuleVo) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 5:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 6:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 7:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 9:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 10:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField10(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 11:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField11(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 12:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField12(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 13:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField13(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RuleVo[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *RuleVo) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.RuleCode = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.RuleName = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.RoomId = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField4(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.Rules = make([]*RuleVo, 0, size)
+	for i := 0; i < size; i++ {
+		_elem := NewRuleVo()
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		p.Rules = append(p.Rules, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField5(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Logic = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField6(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Op = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField7(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Value = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField8(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.IndicatorCode = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField9(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Description = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField10(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeStart = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField11(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeEnd = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField12(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeCreate = v
+	}
+	return nil
+}
+
+func (p *RuleVo) ReadField13(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TimeUpdate = v
+	}
+	return nil
+}
+
+func (p *RuleVo) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("RuleVo"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
+			goto WriteFieldError
+		}
+		if err = p.writeField10(oprot); err != nil {
+			fieldId = 10
+			goto WriteFieldError
+		}
+		if err = p.writeField11(oprot); err != nil {
+			fieldId = 11
+			goto WriteFieldError
+		}
+		if err = p.writeField12(oprot); err != nil {
+			fieldId = 12
+			goto WriteFieldError
+		}
+		if err = p.writeField13(oprot); err != nil {
+			fieldId = 13
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *RuleVo) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("RuleCode", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.RuleCode); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("RuleName", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.RuleName); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("RoomId", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.RoomId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Rules", thrift.LIST, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Rules)); err != nil {
+		return err
+	}
+	for _, v := range p.Rules {
+		if err := v.Write(oprot); err != nil {
+			return err
+		}
+	}
+	if err := oprot.WriteListEnd(); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Logic", thrift.I64, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Logic); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Op", thrift.I64, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Op); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Value", thrift.I64, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Value); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("IndicatorCode", thrift.STRING, 8); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.IndicatorCode); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField9(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Description", thrift.STRING, 9); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Description); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField10(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeStart", thrift.STRING, 10); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeStart); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField11(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeEnd", thrift.STRING, 11); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeEnd); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 11 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 11 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField12(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeCreate", thrift.STRING, 12); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeCreate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 12 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 12 end error: ", p), err)
+}
+
+func (p *RuleVo) writeField13(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TimeUpdate", thrift.STRING, 13); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TimeUpdate); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 13 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 13 end error: ", p), err)
+}
+
+func (p *RuleVo) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("RuleVo(%+v)", *p)
+}
+
+func (p *RuleVo) DeepEqual(ano *RuleVo) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.RuleCode) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.RuleName) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.RoomId) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Rules) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Logic) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.Op) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.Value) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.IndicatorCode) {
+		return false
+	}
+	if !p.Field9DeepEqual(ano.Description) {
+		return false
+	}
+	if !p.Field10DeepEqual(ano.TimeStart) {
+		return false
+	}
+	if !p.Field11DeepEqual(ano.TimeEnd) {
+		return false
+	}
+	if !p.Field12DeepEqual(ano.TimeCreate) {
+		return false
+	}
+	if !p.Field13DeepEqual(ano.TimeUpdate) {
+		return false
+	}
+	return true
+}
+
+func (p *RuleVo) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.RuleCode, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.RuleName, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field3DeepEqual(src int64) bool {
+
+	if p.RoomId != src {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field4DeepEqual(src []*RuleVo) bool {
+
+	if len(p.Rules) != len(src) {
+		return false
+	}
+	for i, v := range p.Rules {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+func (p *RuleVo) Field5DeepEqual(src int64) bool {
+
+	if p.Logic != src {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field6DeepEqual(src int64) bool {
+
+	if p.Op != src {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field7DeepEqual(src int64) bool {
+
+	if p.Value != src {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field8DeepEqual(src string) bool {
+
+	if strings.Compare(p.IndicatorCode, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field9DeepEqual(src string) bool {
+
+	if strings.Compare(p.Description, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field10DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeStart, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field11DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeEnd, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field12DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeCreate, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RuleVo) Field13DeepEqual(src string) bool {
+
+	if strings.Compare(p.TimeUpdate, src) != 0 {
 		return false
 	}
 	return true
@@ -3112,13 +6054,68 @@ func (p *ModifyRuleResponse) Field1DeepEqual(src bool) bool {
 }
 
 type Task struct {
+	TaskCode  string `thrift:"TaskCode,1" json:"TaskCode"`
+	TaskName  string `thrift:"TaskName,2" json:"TaskName"`
+	RuleCode  string `thrift:"RuleCode,3" json:"RuleCode"`
+	Frequency int64  `thrift:"Frequency,4" json:"Frequency"`
+	NextTime  string `thrift:"NextTime,6" json:"NextTime"`
+	Status    bool   `thrift:"Status,7" json:"Status"`
 }
 
 func NewTask() *Task {
 	return &Task{}
 }
 
-var fieldIDToName_Task = map[int16]string{}
+func (p *Task) GetTaskCode() (v string) {
+	return p.TaskCode
+}
+
+func (p *Task) GetTaskName() (v string) {
+	return p.TaskName
+}
+
+func (p *Task) GetRuleCode() (v string) {
+	return p.RuleCode
+}
+
+func (p *Task) GetFrequency() (v int64) {
+	return p.Frequency
+}
+
+func (p *Task) GetNextTime() (v string) {
+	return p.NextTime
+}
+
+func (p *Task) GetStatus() (v bool) {
+	return p.Status
+}
+func (p *Task) SetTaskCode(val string) {
+	p.TaskCode = val
+}
+func (p *Task) SetTaskName(val string) {
+	p.TaskName = val
+}
+func (p *Task) SetRuleCode(val string) {
+	p.RuleCode = val
+}
+func (p *Task) SetFrequency(val int64) {
+	p.Frequency = val
+}
+func (p *Task) SetNextTime(val string) {
+	p.NextTime = val
+}
+func (p *Task) SetStatus(val bool) {
+	p.Status = val
+}
+
+var fieldIDToName_Task = map[int16]string{
+	1: "TaskCode",
+	2: "TaskName",
+	3: "RuleCode",
+	4: "Frequency",
+	6: "NextTime",
+	7: "Status",
+}
 
 func (p *Task) Read(iprot thrift.TProtocol) (err error) {
 
@@ -3137,8 +6134,72 @@ func (p *Task) Read(iprot thrift.TProtocol) (err error) {
 		if fieldTypeId == thrift.STOP {
 			break
 		}
-		if err = iprot.Skip(fieldTypeId); err != nil {
-			goto SkipFieldTypeError
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 7:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		}
 
 		if err = iprot.ReadFieldEnd(); err != nil {
@@ -3154,8 +6215,10 @@ ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-SkipFieldTypeError:
-	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_Task[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
@@ -3163,11 +6226,90 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
+func (p *Task) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TaskCode = v
+	}
+	return nil
+}
+
+func (p *Task) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.TaskName = v
+	}
+	return nil
+}
+
+func (p *Task) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.RuleCode = v
+	}
+	return nil
+}
+
+func (p *Task) ReadField4(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Frequency = v
+	}
+	return nil
+}
+
+func (p *Task) ReadField6(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.NextTime = v
+	}
+	return nil
+}
+
+func (p *Task) ReadField7(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		p.Status = v
+	}
+	return nil
+}
+
 func (p *Task) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
 	if err = oprot.WriteStructBegin("Task"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
 
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
@@ -3179,10 +6321,114 @@ func (p *Task) Write(oprot thrift.TProtocol) (err error) {
 	return nil
 WriteStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *Task) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TaskCode", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TaskCode); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *Task) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("TaskName", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.TaskName); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *Task) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("RuleCode", thrift.STRING, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.RuleCode); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *Task) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Frequency", thrift.I64, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Frequency); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *Task) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("NextTime", thrift.STRING, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.NextTime); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *Task) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Status", thrift.BOOL, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteBool(p.Status); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
 func (p *Task) String() string {
@@ -3196,6 +6442,67 @@ func (p *Task) DeepEqual(ano *Task) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.TaskCode) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.TaskName) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.RuleCode) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.Frequency) {
+		return false
+	}
+	if !p.Field6DeepEqual(ano.NextTime) {
+		return false
+	}
+	if !p.Field7DeepEqual(ano.Status) {
+		return false
+	}
+	return true
+}
+
+func (p *Task) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.TaskCode, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Task) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.TaskName, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Task) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.RuleCode, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Task) Field4DeepEqual(src int64) bool {
+
+	if p.Frequency != src {
+		return false
+	}
+	return true
+}
+func (p *Task) Field6DeepEqual(src string) bool {
+
+	if strings.Compare(p.NextTime, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Task) Field7DeepEqual(src bool) bool {
+
+	if p.Status != src {
 		return false
 	}
 	return true
