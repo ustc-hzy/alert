@@ -1,8 +1,11 @@
 package main
 
 import (
+	"alert/core"
+	"alert/core/dao/indicator_dao"
 	"alert/core/dao/task_dao"
 	"alert/core/service"
+	"alert/core/utils"
 	"alert/kitex_gen/api"
 	"context"
 	"github.com/jinzhu/copier"
@@ -14,50 +17,64 @@ type CRUDImpl struct{}
 
 // AddIndicator implements the CRUDImpl interface.
 func (s *CRUDImpl) AddIndicator(ctx context.Context, req *api.AddIndicatorRequest) (resp *api.AddIndicatorResponse, err error) {
-	// TODO: Your code here...
-	return
+	indicator, indicatorJson := utils.ConvertIndicator(req)
+	res := service.IndicatorServiceImpl{}.Add(indicator, indicatorJson)
+	return &api.AddIndicatorResponse{Success: res}, nil
 }
 
 // DeleteIndicator implements the CRUDImpl interface.
 func (s *CRUDImpl) DeleteIndicator(ctx context.Context, req *api.DeleteIndicatorRequest) (resp *api.DeleteIndicatorResponse, err error) {
-	// TODO: Your code here...
-	return
+	res := service.IndicatorServiceImpl{}.Delete(req.IndicatorCode)
+	return &api.DeleteIndicatorResponse{Success: res}, nil
 }
 
 // QueryIndicator implements the CRUDImpl interface.
 func (s *CRUDImpl) QueryIndicator(ctx context.Context, req *api.QueryIndicatorRequest) (resp *api.QueryIndicatorResponse, err error) {
-	// TODO: Your code here...
-	return
+	res := service.IndicatorServiceImpl{}.Query(req.IndicatorCode)
+	indicator := api.Indicator{}
+	copier.Copy(&indicator, res)
+	indicator.TimeCreate = res.CreateTime.Format(core.TIMETAMPLATE)
+	indicator.TimeUpdate = res.UpdateTime.Format(core.TIMETAMPLATE)
+	return &api.QueryIndicatorResponse{Indicator: &indicator}, nil
 }
 
 // ModifyIndicator implements the CRUDImpl interface.
 func (s *CRUDImpl) ModifyIndicator(ctx context.Context, req *api.ModifyIndicatorRequest) (resp *api.ModifyIndicatorResponse, err error) {
-	// TODO: Your code here...
-	return
+	indicator := indicator_dao.Indicator{}
+	copier.Copy(&indicator, req.Indicator)
+	res := service.IndicatorServiceImpl{}.Modify(indicator)
+	return &api.ModifyIndicatorResponse{Success: res}, nil
 }
 
 // AddRule implements the CRUDImpl interface.
 func (s *CRUDImpl) AddRule(ctx context.Context, req *api.AddRuleRequest) (resp *api.AddRuleResponse, err error) {
-	// TODO: Your code here...
-	return
+	rule := utils.ConvertRule(req)
+	ruleJson := utils.ConvertRuleJson(req)
+	res := service.RuleServiceImpl{}.Add(rule, ruleJson)
+	return &api.AddRuleResponse{Success: res}, nil
 }
 
 // DeleteRule implements the CRUDImpl interface.
 func (s *CRUDImpl) DeleteRule(ctx context.Context, req *api.DeleteRuleRequest) (resp *api.DeleteRuleResponse, err error) {
-	// TODO: Your code here...
-	return
+	res := service.RuleServiceImpl{}.Delete(req.RuleCode)
+	return &api.DeleteRuleResponse{Success: res}, nil
 }
 
 // QueryRule implements the CRUDImpl interface.
 func (s *CRUDImpl) QueryRule(ctx context.Context, req *api.QueryRuleRequest) (resp *api.QueryRuleResponse, err error) {
-	// TODO: Your code here...
-	return
+	res := service.RuleServiceImpl{}.Query(req.RuleCode)
+	rule := api.Rule{}
+	copier.Copy(&rule, res)
+	rule.TimeCreate = res.CreateTime.Format(core.TIMETAMPLATE)
+	rule.TimeUpdate = res.UpdateTime.Format(core.TIMETAMPLATE)
+	return &api.QueryRuleResponse{Rule: &rule}, nil
 }
 
 // ModifyRule implements the CRUDImpl interface.
 func (s *CRUDImpl) ModifyRule(ctx context.Context, req *api.ModifyRuleRequest) (resp *api.ModifyRuleResponse, err error) {
-	// TODO: Your code here...
-	return
+	rule := utils.ConvertRule2(req)
+	res := service.RuleServiceImpl{}.Modify(rule)
+	return &api.ModifyRuleResponse{Success: res}, nil
 }
 
 // AddTask implements the CRUDImpl interface.

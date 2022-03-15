@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"time"
 )
 
 type IndicatorServiceImpl struct{}
@@ -91,6 +92,7 @@ func (i IndicatorServiceImpl) Modify(indicator indicator_dao.Indicator) bool {
 		log.Fatalln("the indicator code not exist")
 		return false
 	}
+	indicator.UpdateTime = time.Now()
 	res := dao.DB.Debug().Omit("create_time").Where("code", indicator.IndicatorCode).Where("is_delete = ?", 0).Save(&indicator)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
