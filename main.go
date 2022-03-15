@@ -1,13 +1,12 @@
 package main
 
 import (
-	"alert/core/service"
-	api "alert/kitex_gen/api/schedule"
+	api "alert/kitex_gen/api/crud"
 	"log"
 )
 
 func main() {
-	svr := api.NewServer(new(service.ScheduleImpl))
+	svr := api.NewServer(new(CRUDImpl))
 
 	err := svr.Run()
 

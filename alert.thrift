@@ -1,14 +1,5 @@
 namespace go api
 
-
-struct scheduleRequest {
-  1: i64 frequency
-}
-
-struct scheduleResponse {
-  1: bool success
-}
-
 struct Indicator {}
 struct IndicatorJson {}
 struct AddIndicatorRequest {
@@ -79,17 +70,56 @@ struct ModifyRuleResponse {
   1: bool success
 }
 
+struct Task {}
 
-service Schedule {
-    scheduleResponse schedule(1: scheduleRequest req)
+struct AddTaskRequest {
+  1: Task task
+}
 
+struct AddTaskResponse {
+  1: bool success
+}
+
+struct DeleteTaskRequest {
+  1: string taskCode
+}
+
+struct DeleteTaskResponse {
+  1: bool success
+}
+
+struct QueryTaskRequest {
+  1: string taskCode
+}
+
+struct QueryTaskResponse {
+  1: Task task
+}
+
+struct ModifyTaskRequest {
+  1: Task task
+}
+
+struct ModifyTaskResponse {
+  1: bool success
+}
+
+
+
+
+service CRUD {
     AddIndicatorResponse addIndicator(1: AddIndicatorRequest req)
-    DeleteIndicatorResponse deleteIndicator(1:DeleteIndicatorRequest req)
-    QueryIndicatorResponse queryIndicator(1:QueryIndicatorRequest req)
-    ModifyIndicatorResponse modifyIndicator(1:ModifyIndicatorRequest req)
+    DeleteIndicatorResponse deleteIndicator(1: DeleteIndicatorRequest req)
+    QueryIndicatorResponse queryIndicator(1: QueryIndicatorRequest req)
+    ModifyIndicatorResponse modifyIndicator(1: ModifyIndicatorRequest req)
 
     AddRuleResponse addRule(1: AddRuleRequest req)
-    DeleteRuleResponse deleteRule(1:DeleteRuleRequest req)
-    QueryRuleResponse queryRule(1:QueryRuleRequest req)
-    ModifyRuleResponse modifyRule(1:ModifyRuleRequest req)
+    DeleteRuleResponse deleteRule(1: DeleteRuleRequest req)
+    QueryRuleResponse queryRule(1: QueryRuleRequest req)
+    ModifyRuleResponse modifyRule(1: ModifyRuleRequest req)
+
+    AddTaskResponse addTask(1: AddTaskRequest req)
+    DeleteTaskResponse deleteTask(1: DeleteTaskRequest req)
+    QueryTaskResponse queryTask(1: QueryTaskRequest req)
+    ModifyTaskResponse modifyTask(1: ModifyTaskRequest req)
 }
