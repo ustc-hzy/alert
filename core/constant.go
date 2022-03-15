@@ -26,3 +26,5 @@ const (
 	AND LogicType = 0
 	OR  LogicType = 1
 )
+
+const TIMETAMPLATE = "2006-01-02 15:04:05"

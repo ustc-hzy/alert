@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"time"
 )
 
 type RuleServiceImpl struct{}
@@ -98,6 +99,7 @@ func (i RuleServiceImpl) Modify(rule rule_dao.Rule) bool {
 		log.Fatalln("the indicator code not exist")
 		return false
 	}
+	rule.UpdateTime = time.Now()
 	res := dao.DB.Debug().Omit("create_time").Where("rule_code", rule.RuleCode).Where("is_delete = ?", 0).Save(&rule)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
