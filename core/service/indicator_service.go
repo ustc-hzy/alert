@@ -26,7 +26,7 @@ func (i IndicatorServiceImpl) AntiSerialization(expression string) indicator_dao
 	var result indicator_dao.IndicatorJson
 	err := json.Unmarshal(byteStream, &result)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 	return result
 }
@@ -35,12 +35,12 @@ func (i IndicatorServiceImpl) Add(indicator indicator_dao.Indicator, indicatorJs
 
 	indicator.Expression = i.Serialization(indicatorJson)
 	if IsIndicatorExist(indicator.IndicatorCode) {
-		log.Fatalln("the indicator code already exist")
+		log.Println("the indicator code already exist")
 		return false
 	}
 	res1 := dao.DB.Debug().Table(INDICATORABLENAME).Create(&indicator)
 	if res1.Error != nil {
-		log.Fatalln(res1.Error)
+		log.Println(res1.Error)
 		return false
 	}
 
@@ -49,7 +49,7 @@ func (i IndicatorServiceImpl) Add(indicator indicator_dao.Indicator, indicatorJs
 func (i IndicatorServiceImpl) Delete(indicatorCode string) bool {
 	res := dao.DB.Debug().Table(INDICATORABLENAME).Where("code = ? ", indicatorCode).Where("is_delete = ?", 0).Update("is_delete", 1)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 		return false
 	}
 
@@ -59,10 +59,10 @@ func (i IndicatorServiceImpl) Query(indicatorCode string) vo.IndicatorVO {
 	indicators := indicator_dao.Indicator{}
 	res := dao.DB.Debug().Table(INDICATORABLENAME).Where("code = ?", indicatorCode).Where("is_delete = ?", 0).Find(&indicators)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 	}
 	if res.RowsAffected > 1 {
-		log.Fatalln("code is not only")
+		log.Println("code is not only")
 	} else if res.RowsAffected == 0 {
 		log.Print("not found")
 		//TODO: return what?
@@ -71,7 +71,7 @@ func (i IndicatorServiceImpl) Query(indicatorCode string) vo.IndicatorVO {
 	fmt.Println(res.RowsAffected)
 	//fmt.Println(indicators.Expression)
 	if indicators.Expression == "" {
-		log.Fatalln("empty expression")
+		log.Println("empty expression")
 	}
 	//construct VO
 	indicatorJson := i.AntiSerialization(indicators.Expression)
@@ -89,13 +89,13 @@ func (i IndicatorServiceImpl) Query(indicatorCode string) vo.IndicatorVO {
 }
 func (i IndicatorServiceImpl) Modify(indicator indicator_dao.Indicator) bool {
 	if !IsIndicatorExist(indicator.IndicatorCode) {
-		log.Fatalln("the indicator code not exist")
+		log.Println("the indicator code not exist")
 		return false
 	}
 	indicator.UpdateTime = time.Now()
 	res := dao.DB.Debug().Omit("create_time").Where("code", indicator.IndicatorCode).Where("is_delete = ?", 0).Save(&indicator)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 	}
 	return true
 }
@@ -104,7 +104,7 @@ func IsIndicatorExist(indicatorCode string) bool {
 	var count int64
 	res := dao.DB.Debug().Table(INDICATORABLENAME).Where("code = ?", indicatorCode).Where("is_delete = ?", 0).Count(&count)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 		return false
 	}
 	if count != 0 {
@@ -128,7 +128,7 @@ func (i IndComputeImpl) ComputeLeaf(ind vo.IndicatorVO, condition vo.Condition) 
 		var amount uint
 		res := dao.DB.Debug().Raw(sql).Scan(&amount)
 		if res.Error != nil {
-			log.Fatalln(res.Error)
+			log.Println(res.Error)
 		}
 		return amount
 	} else {
