@@ -5,6 +5,6 @@ import (
 )
 
 type WorkInterface interface {
-	Work(RuleCode string)
+	Work(RuleCode string, ch chan int)
 	ComputeWork(IndicatorCode string, condition vo.Condition) uint
 }
