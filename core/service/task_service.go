@@ -64,20 +64,26 @@ func (i TaskServiceImpl) Query(taskCode string) vo.TaskVO {
 }
 
 func (i TaskServiceImpl) Modify(task task_dao.Task) bool {
-	res := dao.DB.Debug().Where("task_code", task.TaskCode).Save(&task)
+	res := dao.DB.Debug().Omit("next_time", "status").Where("task_code", task.TaskCode).Save(&task)
 	if res.Error != nil {
 		log.Fatalln(res.Error)
 	}
 	return true
 }
 
-func (i TaskServiceImpl) UpdateTime(task *task_dao.Task) bool {
-	task.NextTime = time.Now().Add(task.Frequency)
+func (i TaskServiceImpl) UpdateTime(task task_dao.Task) bool {
+	res := dao.DB.Debug().Model(&task).Update("next_time", time.Now().Add(task.Frequency))
+	if res.Error != nil {
+		log.Fatalln(res.Error)
+	}
 	return true
 }
 
-func (i TaskServiceImpl) UpdateStatus(task *task_dao.Task, status bool) bool {
-	task.Status = status
+func (i TaskServiceImpl) UpdateStatus(task task_dao.Task, status bool) bool {
+	res := dao.DB.Debug().Model(&task).Update("status", status)
+	if res.Error != nil {
+		log.Fatalln(res.Error)
+	}
 	return true
 }
 
@@ -109,10 +115,7 @@ func (s ScheduleImpl) Schedule(frequency time.Duration) {
 			if task.NextTime.Before(time.Now()) {
 				ch <- j
 				go WorkServiceImpl{}.Work(task.RuleCode, ch)
-				TaskServiceImpl{}.UpdateTime(&taskList[j])
-
-				//write back to DB
-				TaskServiceImpl{}.Modify(taskList[j])
+				TaskServiceImpl{}.UpdateTime(task)
 			}
 		}
 
