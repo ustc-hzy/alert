@@ -25,7 +25,10 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		log.Fatalf("failed to connect database:%v", err)
 	}
-	DB.AutoMigrate(&indicator_dao.Indicator{}, &rule_dao.Rule{}, &task_dao.Task{}, &alert_dao.Alert{})
+	err = DB.AutoMigrate(&indicator_dao.Indicator{}, &rule_dao.Rule{}, &task_dao.Task{}, &alert_dao.Alert{})
+	if err != nil {
+		log.Fatalf("failed to create the table")
+	}
 	return DB
 }
 

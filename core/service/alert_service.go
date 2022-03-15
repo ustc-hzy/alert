@@ -19,7 +19,7 @@ func (i AlertServiceImpl) Add(ruleName string, roomId uint, time time.Time) bool
 	}
 	resp := dao.DB.Debug().Table(ALERTTABLENAME).Create(&alert)
 	if resp.Error != nil {
-		log.Fatalln(resp.Error)
+		log.Println(resp.Error)
 		return false
 	}
 	return true
@@ -29,7 +29,7 @@ func (i AlertServiceImpl) Query() []alert_dao.Alert {
 	var alertList []alert_dao.Alert
 	res := dao.DB.Debug().Table(ALERTTABLENAME).Find(&alertList)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 		return nil
 	}
 	return alertList

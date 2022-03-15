@@ -21,16 +21,16 @@ func (i TaskServiceImpl) Add(task task_dao.Task) bool {
 	var count int64
 	res := dao.DB.Debug().Table(TASKTABLENAME).Where("task_code = ?", task.TaskCode).Count(&count)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 		return false
 	}
 	if count != 0 {
-		log.Fatalln("the task already exists")
+		log.Println("the task already exists")
 		return false
 	}
 	resp := dao.DB.Debug().Table(TASKTABLENAME).Create(&task)
 	if resp.Error != nil {
-		log.Fatalln(resp.Error)
+		log.Println(resp.Error)
 		return false
 	}
 	return true
@@ -39,7 +39,7 @@ func (i TaskServiceImpl) Add(task task_dao.Task) bool {
 func (i TaskServiceImpl) Delete(taskCode string) bool {
 	res := dao.DB.Debug().Table(TASKTABLENAME).Where("task_code = ? ", taskCode).Delete(&task_dao.Task{})
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 		return false
 	}
 	return true
@@ -49,10 +49,10 @@ func (i TaskServiceImpl) Query(taskCode string) vo.TaskVO {
 	task := task_dao.Task{}
 	res := dao.DB.Debug().Table(TASKTABLENAME).Where("task_code = ?", taskCode).Find(&task)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 	}
 	if res.RowsAffected > 1 {
-		log.Fatalln("task duplicated")
+		log.Println("task duplicated")
 	} else if res.RowsAffected == 0 {
 		log.Print("task not found")
 		return vo.TaskVO{}
@@ -66,7 +66,7 @@ func (i TaskServiceImpl) Query(taskCode string) vo.TaskVO {
 func (i TaskServiceImpl) Modify(task task_dao.Task) bool {
 	res := dao.DB.Debug().Omit("next_time", "status").Where("task_code", task.TaskCode).Save(&task)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 	}
 	return true
 }
@@ -74,7 +74,7 @@ func (i TaskServiceImpl) Modify(task task_dao.Task) bool {
 func (i TaskServiceImpl) UpdateTime(task task_dao.Task) bool {
 	res := dao.DB.Debug().Model(&task).Update("next_time", time.Now().Add(task.Frequency))
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 	}
 	return true
 }
@@ -82,7 +82,7 @@ func (i TaskServiceImpl) UpdateTime(task task_dao.Task) bool {
 func (i TaskServiceImpl) UpdateStatus(task task_dao.Task, status bool) bool {
 	res := dao.DB.Debug().Model(&task).Update("status", status)
 	if res.Error != nil {
-		log.Fatalln(res.Error)
+		log.Println(res.Error)
 	}
 	return true
 }
@@ -107,7 +107,7 @@ func (s ScheduleImpl) Schedule(frequency time.Duration) {
 		var taskList []task_dao.Task
 		res := dao.DB.Debug().Table(TASKTABLENAME).Find(&taskList)
 		if res.Error != nil {
-			log.Fatalln(res.Error)
+			log.Println(res.Error)
 		}
 
 		//check
