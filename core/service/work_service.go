@@ -22,6 +22,6 @@ func (i WorkServiceImpl) Work(ruleCode string, ch chan int) {
 	<-ch
 }
 
-func (i WorkServiceImpl) ComputeWork(IndicatorCode string, condition vo.Condition) uint {
+func (i WorkServiceImpl) ComputeWork(IndicatorCode string, condition vo.Condition) float64 {
 	return IndComputeImpl{}.Compute(IndicatorCode, condition)
 }

@@ -22,6 +22,6 @@ type RuleJson struct {
 	Rules         []vo.RuleVo
 	Logic         core.LogicType
 	Op            core.OpType
-	Value         uint
+	Value         float64
 	IndicatorCode string
 }

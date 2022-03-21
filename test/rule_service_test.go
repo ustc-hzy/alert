@@ -15,14 +15,23 @@ var rule_check_service = service.RuleCheckImpl{}
 
 func TestRuleAdd(t *testing.T) {
 
-	rule := rule_dao.Rule{RuleCode: "test12", RuleName: "test", RoomId: 0, Expression: "test", Description: "test",
-		StartTime: time.Now(), EndTime: time.Now(), CreateTime: time.Now(), UpdateTime: time.Now()}
+	rule := rule_dao.Rule{
+		RuleCode:    "pricePerPeopleRule",
+		RuleName:    "",
+		RoomId:      1,
+		Expression:  "",
+		Description: "pricePerPeopleRule",
+		StartTime:   time.Now(),
+		EndTime:     time.Now(),
+		CreateTime:  time.Now(),
+		UpdateTime:  time.Now(),
+	}
 	ruleJson := rule_dao.RuleJson{
 		Rules:         nil,
 		Logic:         core.NIL,
-		Op:            core.EQUAL,
-		Value:         2,
-		IndicatorCode: "test1",
+		Op:            core.LARGER,
+		Value:         300,
+		IndicatorCode: "pricePerPeople",
 	}
 	result := rule_service.Add(rule, ruleJson)
 	if !result {
@@ -51,7 +60,7 @@ func TestRuleQuery(t *testing.T) {
 
 func TestCheck(t *testing.T) {
 
-	val, _ := rule_check_service.Check("test12")
+	val, _ := rule_check_service.Check("orderRule")
 	fmt.Println(val)
 }
 
@@ -114,7 +123,40 @@ func TestRuleAddCompound(t *testing.T) {
 	}
 }
 
+func TestCaseRuleAdd(t *testing.T) {
+
+	//moneyRule := rule_service.Query("moneyRule")moneyRule
+	//pricePerPeopleRule := rule_service.Query("pricePerPeopleRule")
+	tempRule := rule_service.Query("tempRule")
+	orderRule := rule_service.Query("orderRule")
+
+	rule := rule_dao.Rule{
+		RuleCode:    "testCaseRule",
+		RuleName:    "",
+		RoomId:      1,
+		Expression:  "",
+		Description: "",
+		StartTime:   time.Now(),
+		EndTime:     time.Now(),
+		CreateTime:  time.Now(),
+		UpdateTime:  time.Now(),
+	}
+	rules := []vo.RuleVo{tempRule, orderRule}
+	ruleJson := rule_dao.RuleJson{
+		Rules:         rules,
+		Logic:         core.OR,
+		Op:            core.NIL,
+		Value:         0,
+		IndicatorCode: "",
+	}
+
+	result := rule_service.Add(rule, ruleJson)
+	if !result {
+		t.Fatal("error")
+	}
+}
+
 func TestRuleComputeCompound(t *testing.T) {
-	val, _ := rule_check_service.Check("ruleAll3")
+	val, _ := rule_check_service.Check("testCaseRule")
 	fmt.Println(val)
 }

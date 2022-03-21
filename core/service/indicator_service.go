@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"strconv"
 	"time"
 )
@@ -115,17 +116,17 @@ func IsIndicatorExist(indicatorCode string) bool {
 }
 
 //TODO: param condition
-func (i IndComputeImpl) Compute(indicatorCode string, condition vo.Condition) uint {
+func (i IndComputeImpl) Compute(indicatorCode string, condition vo.Condition) float64 {
 	ind := IndicatorServiceImpl{}.Query(indicatorCode)
-	return i.ComputeLeaf(ind, condition)
+	return math.Trunc(i.ComputeLeaf(ind, condition)/0.01) * 0.01
 }
 
-func (i IndComputeImpl) ComputeLeaf(ind vo.IndicatorVO, condition vo.Condition) uint {
+func (i IndComputeImpl) ComputeLeaf(ind vo.IndicatorVO, condition vo.Condition) float64 {
 	sql := ind.Value
 	if ind.Indicators == nil && len(sql) != 0 && ind.Caculate == -1 {
 		//leaf
 		sql += ConstructSql(condition)
-		var amount uint
+		var amount float64
 		res := dao.DB.Debug().Raw(sql).Scan(&amount)
 		if res.Error != nil {
 			log.Println(res.Error)

@@ -1,5 +1,11 @@
 namespace go api
 
+struct BaseResponse{
+    1:required bool success
+    2:required i64 code
+    3:required string msg
+}
+
 struct Indicator {
   1: string IndicatorCode
   2: string Name
@@ -31,7 +37,7 @@ struct AddIndicatorRequest {
 }
 
 struct AddIndicatorResponse {
-  1: bool success
+  1: BaseResponse message
 }
 
 struct DeleteIndicatorRequest {
@@ -39,7 +45,7 @@ struct DeleteIndicatorRequest {
 }
 
 struct DeleteIndicatorResponse {
-  1: bool success
+  1: BaseResponse message
 }
 
 struct QueryIndicatorRequest {
@@ -47,7 +53,8 @@ struct QueryIndicatorRequest {
 }
 
 struct QueryIndicatorResponse {
-  1: Indicator indicator
+  1: BaseResponse message
+  2: Indicator indicator
 }
 
 struct ModifyIndicatorRequest {
@@ -55,7 +62,7 @@ struct ModifyIndicatorRequest {
 }
 
 struct ModifyIndicatorResponse {
-  1: bool success
+  1: BaseResponse message
 }
 
 struct Rule {
@@ -100,7 +107,7 @@ struct AddRuleRequest {
 }
 
 struct AddRuleResponse {
-  1: bool success
+  1: BaseResponse message
 }
 
 struct DeleteRuleRequest {
@@ -108,7 +115,7 @@ struct DeleteRuleRequest {
 }
 
 struct DeleteRuleResponse {
-  1: bool success
+  1: BaseResponse message
 }
 
 struct QueryRuleRequest {
@@ -116,7 +123,8 @@ struct QueryRuleRequest {
 }
 
 struct QueryRuleResponse {
-  1: Rule rule
+  1: BaseResponse message
+  2: Rule rule
 }
 
 struct ModifyRuleRequest {
@@ -124,7 +132,7 @@ struct ModifyRuleRequest {
 }
 
 struct ModifyRuleResponse {
-  1: bool success
+  1: BaseResponse message
 }
 
 struct Task {
@@ -141,7 +149,7 @@ struct AddTaskRequest {
 }
 
 struct AddTaskResponse {
-  1: bool success
+  1: BaseResponse message
 }
 
 struct DeleteTaskRequest {
@@ -149,7 +157,7 @@ struct DeleteTaskRequest {
 }
 
 struct DeleteTaskResponse {
-  1: bool success
+  1: BaseResponse message
 }
 
 struct QueryTaskRequest {
@@ -157,7 +165,8 @@ struct QueryTaskRequest {
 }
 
 struct QueryTaskResponse {
-  1: Task task
+  1: BaseResponse message
+  2: Task task
 }
 
 struct ModifyTaskRequest {
@@ -165,7 +174,7 @@ struct ModifyTaskRequest {
 }
 
 struct ModifyTaskResponse {
-  1: bool success
+  1: BaseResponse message
 }
 
 
