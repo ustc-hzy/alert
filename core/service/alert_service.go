@@ -11,8 +11,19 @@ const ALERTTABLENAME = "alerts"
 
 type AlertServiceImpl struct{}
 
-func (i AlertServiceImpl) Add(taskName, ruleName, expression string, roomId uint, time time.Time) bool {
+func (i AlertServiceImpl) Add(taskName, ruleName, ruleCode, expression string, roomId uint, time time.Time) bool {
+	var count int64
+	dao.DB.Debug().Table(ALERTTABLENAME).Where("rule_code = ? AND room_id = ?", ruleCode, roomId).Count(&count)
+	if count != 0 {
+		resp := dao.DB.Debug().Table(ALERTTABLENAME).Where("rule_code = ? AND room_id = ?", ruleCode, roomId).Update("time", time)
+		if resp.Error != nil {
+			log.Println(resp.Error)
+			return false
+		}
+		return true
+	}
 	alert := alert_dao.Alert{
+		RuleCode:   ruleCode,
 		TaskName:   taskName,
 		RuleName:   ruleName,
 		Expression: expression,

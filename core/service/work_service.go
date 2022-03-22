@@ -21,7 +21,7 @@ func (i WorkServiceImpl) Work(ruleCode string, ch chan string) {
 		if err != nil {
 			log.Println(err)
 		}
-		AlertServiceImpl{}.Add(taskName, res.RuleName, expression, res.RoomId, time.Now())
+		AlertServiceImpl{}.Add(taskName, res.RuleName, res.RuleCode, expression, res.RoomId, time.Now())
 		fmt.Println(ruleCode + " has been triggered")
 	}
 
