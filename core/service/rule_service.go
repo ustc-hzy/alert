@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 )
 
@@ -33,7 +34,7 @@ func (i RuleServiceImpl) AntiSerialization(expression string) rule_dao.RuleJson 
 func (i RuleServiceImpl) Add(rule rule_dao.Rule, ruleJson rule_dao.RuleJson) bool {
 
 	rule.Expression = i.Serialization(ruleJson)
-	if IsRuleExist(rule.RuleCode) {
+	if i.IsRuleExist(rule.RuleCode) {
 		log.Println("the rule code already exist")
 		return false
 	}
@@ -95,7 +96,7 @@ func (i RuleServiceImpl) Query(ruleCode string) vo.RuleVo {
 	return ruleVo
 }
 func (i RuleServiceImpl) Modify(rule rule_dao.Rule) bool {
-	if !IsRuleExist(rule.RuleCode) {
+	if !i.IsRuleExist(rule.RuleCode) {
 		log.Println("the indicator code not exist")
 		return false
 	}
@@ -107,7 +108,7 @@ func (i RuleServiceImpl) Modify(rule rule_dao.Rule) bool {
 	return true
 }
 
-func IsRuleExist(ruleCode string) bool {
+func (i RuleServiceImpl) IsRuleExist(ruleCode string) bool {
 	var count int64
 	res := dao.DB.Debug().Table(RULETABLENAME).Where("rule_code = ?", ruleCode).Where("is_delete = ?", 0).Count(&count)
 	if res.Error != nil {
@@ -118,6 +119,43 @@ func IsRuleExist(ruleCode string) bool {
 		return true
 	}
 	return false
+}
+
+func (i RuleServiceImpl) RuleExpression(rule vo.RuleVo) (string, error) {
+	if rule.Rules == nil && rule.Logic == -1 && rule.Op != -1 && rule.Value != 0 && len(rule.IndicatorCode) != 0 {
+		//if leaf
+		var op string
+		switch rule.Op {
+		case core.LARGER:
+			op = ">"
+			break
+		case core.SMALLER:
+			op = "<"
+			break
+		case core.EQUAL:
+			op = "="
+			break
+		case core.NOTEQUAL:
+			op = "!="
+			break
+		}
+		ret := rule.IndicatorCode + op + strconv.FormatFloat(rule.Value, 'f', 0, 64)
+		return ret, nil
+	} else if rule.Rules != nil && rule.Logic != -1 && rule.Op == -1 && rule.Value == 0 && len(rule.IndicatorCode) == 0 {
+		//if not leaf
+		r1, e1 := i.RuleExpression(rule.Rules[0])
+		r2, e2 := i.RuleExpression(rule.Rules[1])
+		switch rule.Logic {
+		case core.AND:
+			ret := "(" + r1 + "&&" + r2 + ")"
+			return ret, e1
+		case core.OR:
+			ret := "(" + r1 + "||" + r2 + ")"
+			return ret, e2
+		}
+
+	}
+	return "", errors.New("data error")
 }
 
 func (i RuleCheckImpl) Check(ruleCode string) (bool, error) {

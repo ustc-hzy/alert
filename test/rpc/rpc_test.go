@@ -4,6 +4,7 @@ import (
 	"alert/kitex_gen/api"
 	"alert/kitex_gen/api/crud"
 	"context"
+	"fmt"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
 	"log"
@@ -150,4 +151,80 @@ func TestRpcQueryRule(t *testing.T) {
 		log.Fatalln(err)
 	}
 	log.Println(queryRuleResp)
+}
+
+func TestRpcAddTask(t *testing.T) {
+	cli := Connect()
+	addReq := &api.AddTaskRequest{
+		Task: &api.Task{
+			TaskCode:  "taskTest2",
+			TaskName:  "test",
+			RuleCode:  "testCaseRule",
+			Frequency: 30,
+			NextTime:  "2006-01-02 15:04:05",
+			Status:    true,
+		},
+	}
+
+	addResp, err := cli.AddTask(context.Background(), addReq, callopt.WithRPCTimeout(3*time.Second))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	if addResp.Success {
+		log.Println("Added Successfully")
+	} else {
+		log.Println("Add Failed")
+	}
+}
+
+func TestRpcDeleteTask(t *testing.T) {
+	cli := Connect()
+	deleteReq := &api.DeleteTaskRequest{
+		TaskCode: "taskTest1",
+	}
+	deleteResp, err := cli.DeleteTask(context.Background(), deleteReq, callopt.WithRPCTimeout(3*time.Second))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	if deleteResp.Success {
+		log.Println("Deleted Successfully")
+	} else {
+		log.Println("Delete Failed")
+	}
+}
+
+func TestRpcQueryTask(t *testing.T) {
+	cli := Connect()
+	queryReq := &api.QueryTaskRequest{
+		TaskCode: "taskTest",
+	}
+	queryResp, err := cli.QueryTask(context.Background(), queryReq, callopt.WithRPCTimeout(3*time.Second))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(queryResp)
+}
+
+func TestRpcModifyTask(t *testing.T) {
+	cli := Connect()
+	modifyReq := &api.ModifyTaskRequest{
+		Task: &api.Task{
+			TaskCode:  "taskTest",
+			TaskName:  "sum",
+			RuleCode:  "test12",
+			Frequency: 90,
+			NextTime:  "2006-01-02 15:04:05",
+			Status:    true,
+		},
+	}
+
+	modifyResp, err := cli.ModifyTask(context.Background(), modifyReq, callopt.WithRPCTimeout(3*time.Second))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	if modifyResp.Success {
+		log.Println("Modified Successfully")
+	} else {
+		log.Println("Modify Failed")
+	}
 }

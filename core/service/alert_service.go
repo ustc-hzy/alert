@@ -11,11 +11,13 @@ const ALERTTABLENAME = "alerts"
 
 type AlertServiceImpl struct{}
 
-func (i AlertServiceImpl) Add(ruleName string, roomId uint, time time.Time) bool {
+func (i AlertServiceImpl) Add(taskName, ruleName, expression string, roomId uint, time time.Time) bool {
 	alert := alert_dao.Alert{
-		RuleName: ruleName,
-		RoomID:   roomId,
-		Time:     time,
+		TaskName:   taskName,
+		RuleName:   ruleName,
+		Expression: expression,
+		RoomID:     roomId,
+		Time:       time,
 	}
 	resp := dao.DB.Debug().Table(ALERTTABLENAME).Create(&alert)
 	if resp.Error != nil {

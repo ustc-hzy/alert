@@ -28,6 +28,14 @@ func (i TaskServiceImpl) Add(task task_dao.Task) bool {
 		log.Println("the task already exists")
 		return false
 	}
+
+	//if rules don't exist
+	m := RuleServiceImpl{}.IsRuleExist(task.RuleCode)
+	if m == false {
+		log.Println("the rule doesn't exist")
+		return false
+	}
+
 	resp := dao.DB.Debug().Table(TASKTABLENAME).Create(&task)
 	if resp.Error != nil {
 		log.Println(resp.Error)
@@ -64,6 +72,13 @@ func (i TaskServiceImpl) Query(taskCode string) vo.TaskVO {
 }
 
 func (i TaskServiceImpl) Modify(task task_dao.Task) bool {
+	//if rules don't exist
+	m := RuleServiceImpl{}.IsRuleExist(task.RuleCode)
+	if m == false {
+		log.Println("the rule doesn't exist")
+		return false
+	}
+
 	res := dao.DB.Debug().Omit("next_time", "status").Where("task_code", task.TaskCode).Save(&task)
 	if res.Error != nil {
 		log.Println(res.Error)
@@ -100,7 +115,7 @@ func (i TaskServiceImpl) TransferTaskVo(task task_dao.Task) vo.TaskVO {
 
 func (s ScheduleImpl) Schedule(frequency time.Duration) {
 
-	ch := make(chan int, POOLSIZE)
+	ch := make(chan string, POOLSIZE)
 	//schedule
 	for i := 1; ; i++ {
 		//get taskList
@@ -111,9 +126,9 @@ func (s ScheduleImpl) Schedule(frequency time.Duration) {
 		}
 
 		//check
-		for j, task := range taskList {
+		for _, task := range taskList {
 			if task.NextTime.Before(time.Now()) {
-				ch <- j
+				ch <- task.TaskName
 				go WorkServiceImpl{}.Work(task.RuleCode, ch)
 				TaskServiceImpl{}.UpdateTime(task)
 			}
