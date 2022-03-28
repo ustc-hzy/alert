@@ -11,7 +11,7 @@ const ALERTTABLENAME = "alerts"
 
 type AlertServiceImpl struct{}
 
-func (i AlertServiceImpl) Add(taskName, ruleName, ruleCode, expression string, roomId uint, time time.Time) bool {
+func (i AlertServiceImpl) Add(taskName, ruleName, ruleCode, expression, value string, roomId uint, time time.Time) bool {
 	var count int64
 	dao.DB.Debug().Table(ALERTTABLENAME).Where("rule_code = ? AND room_id = ?", ruleCode, roomId).Count(&count)
 	if count != 0 {
@@ -27,6 +27,7 @@ func (i AlertServiceImpl) Add(taskName, ruleName, ruleCode, expression string, r
 		TaskName:   taskName,
 		RuleName:   ruleName,
 		Expression: expression,
+		Value:      value,
 		RoomID:     roomId,
 		Time:       time,
 	}

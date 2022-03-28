@@ -2,6 +2,7 @@ package service
 
 import (
 	"alert/core/vo"
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -15,13 +16,15 @@ func (i WorkServiceImpl) Work(ruleCode string, ch chan string) {
 	if err != nil {
 		log.Println(err)
 	}
-	if ret == true {
+	if ret.Res == true {
 		res := RuleServiceImpl{}.Query(ruleCode)
 		expression, err := RuleServiceImpl{}.RuleExpression(res)
 		if err != nil {
 			log.Println(err)
 		}
-		AlertServiceImpl{}.Add(taskName, res.RuleName, res.RuleCode, expression, res.RoomId, time.Now())
+		valueJson, _ := json.Marshal(ret.Value)
+		value := string(valueJson)
+		AlertServiceImpl{}.Add(taskName, res.RuleName, res.RuleCode, expression, value, res.RoomId, time.Now())
 		fmt.Println(ruleCode + " has been triggered")
 	}
 

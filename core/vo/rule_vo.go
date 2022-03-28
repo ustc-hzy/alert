@@ -20,3 +20,8 @@ type RuleVo struct {
 	CreateTime    time.Time
 	UpdateTime    time.Time
 }
+
+type CheckResult struct {
+	Res   bool
+	Value map[string]int
+}

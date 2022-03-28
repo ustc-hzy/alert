@@ -158,12 +158,19 @@ func (i RuleServiceImpl) RuleExpression(rule vo.RuleVo) (string, error) {
 	return "", errors.New("data error")
 }
 
-func (i RuleCheckImpl) Check(ruleCode string) (bool, error) {
+func (i RuleCheckImpl) Check(ruleCode string) (vo.CheckResult, error) {
 	rule := RuleServiceImpl{}.Query(ruleCode)
-	return i.CheckLeaf(rule)
+	value := make(map[string]int)
+	res, err := i.CheckLeaf(rule, value)
+
+	result := vo.CheckResult{
+		Res:   res,
+		Value: value,
+	}
+	return result, err
 }
 
-func (i RuleCheckImpl) CheckLeaf(rule vo.RuleVo) (bool, error) {
+func (i RuleCheckImpl) CheckLeaf(rule vo.RuleVo, value map[string]int) (bool, error) {
 	if rule.Rules == nil && rule.Logic == -1 && rule.Op != -1 && rule.Value != 0 && len(rule.IndicatorCode) != 0 {
 		//if leaf
 		ind := IndComputeImpl{}.Compute(rule.IndicatorCode, vo.Condition{
@@ -171,6 +178,7 @@ func (i RuleCheckImpl) CheckLeaf(rule vo.RuleVo) (bool, error) {
 			StartTime: "",
 			EndTime:   "",
 		})
+		value[rule.IndicatorCode] = int(ind)
 		switch rule.Op {
 		case core.LARGER:
 			if ind > rule.Value {
@@ -203,8 +211,8 @@ func (i RuleCheckImpl) CheckLeaf(rule vo.RuleVo) (bool, error) {
 		}
 	} else if rule.Rules != nil && rule.Logic != -1 && rule.Op == -1 && rule.Value == 0 && len(rule.IndicatorCode) == 0 {
 		//if not leaf
-		r1, e1 := i.CheckLeaf(rule.Rules[0])
-		r2, e2 := i.CheckLeaf(rule.Rules[1])
+		r1, e1 := i.CheckLeaf(rule.Rules[0], value)
+		r2, e2 := i.CheckLeaf(rule.Rules[1], value)
 		switch rule.Logic {
 		case core.AND:
 			if e1 == nil {

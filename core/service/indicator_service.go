@@ -115,7 +115,6 @@ func IsIndicatorExist(indicatorCode string) bool {
 	return false
 }
 
-//TODO: param condition
 func (i IndComputeImpl) Compute(indicatorCode string, condition vo.Condition) float64 {
 	ind := IndicatorServiceImpl{}.Query(indicatorCode)
 	return math.Trunc(i.ComputeLeaf(ind, condition)/0.01) * 0.01

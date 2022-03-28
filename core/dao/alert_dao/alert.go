@@ -7,6 +7,7 @@ type Alert struct {
 	RuleCode   string    `json:"rule_code"`
 	TaskName   string    `json:"task_name"`
 	Expression string    `json:"expression"`
+	Value      string    `json:"value"`
 	RoomID     uint      `json:"room_id"`
 	Time       time.Time `json:"time"`
 }
