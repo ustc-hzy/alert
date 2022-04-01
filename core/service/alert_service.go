@@ -15,7 +15,7 @@ func (i AlertServiceImpl) Add(taskName, ruleName, ruleCode, expression, value st
 	var count int64
 	dao.DB.Debug().Table(ALERTTABLENAME).Where("rule_code = ? AND room_id = ?", ruleCode, roomId).Count(&count)
 	if count != 0 {
-		resp := dao.DB.Debug().Table(ALERTTABLENAME).Where("rule_code = ? AND room_id = ?", ruleCode, roomId).Update("time", time)
+		resp := dao.DB.Debug().Table(ALERTTABLENAME).Where("rule_code = ? AND room_id = ?", ruleCode, roomId).Updates(map[string]interface{}{"time": time, "expression": expression, "value": value})
 		if resp.Error != nil {
 			log.Println(resp.Error)
 			return false
