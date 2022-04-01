@@ -6,5 +6,5 @@ import (
 )
 
 func TestSchedule(t *testing.T) {
-	service.ScheduleImpl{}.Schedule(50)
+	service.ScheduleImpl{}.Schedule(100)
 }
